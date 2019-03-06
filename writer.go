@@ -85,12 +85,21 @@ func open(paths []string) ([]zapcore.WriteSyncer, func(), error) {
 	return writers, close, nil
 }
 
-// CombineWriteSyncers is a utility that combines multiple WriteSyncers into a
-// single, locked WriteSyncer. If no inputs are supplied, it returns a no-op
-// WriteSyncer.
+//CombineWriteSyncers is a utility that combines multiple WriteSyncers into a
+//single, locked WriteSyncer. If no inputs are supplied, it returns a no-op
+//WriteSyncer.
 //
-// It's provided purely as a convenience; the result is no different from
-// using zapcore.NewMultiWriteSyncer and zapcore.Lock individually.
+//It's provided purely as a convenience; the result is no different from
+//using zapcore.NewMultiWriteSyncer and zapcore.Lock individually.
+
+
+// CombineWriteSyncers 是一个工具类，它将多个 WriteSyncers 组合成一个带锁的WriteSyncer。
+// 如果没有提供输入，则返回 no-op WriteSyncer。
+//
+// 它纯粹是为了方便而提供的，结果与单独使用zapcore.NewMultiWriteSyncer和zapcore.Lock没有什么不同。
+
+
+
 func CombineWriteSyncers(writers ...zapcore.WriteSyncer) zapcore.WriteSyncer {
 	if len(writers) == 0 {
 		return zapcore.AddSync(ioutil.Discard)

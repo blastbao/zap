@@ -31,14 +31,20 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-// A Logger provides fast, leveled, structured logging. All methods are safe
-// for concurrent use.
+//A Logger provides fast, leveled, structured logging. All methods are safe
+//for concurrent use.
 //
-// The Logger is designed for contexts in which every microsecond and every
-// allocation matters, so its API intentionally favors performance and type
-// safety over brevity. For most applications, the SugaredLogger strikes a
-// better balance between performance and ergonomics.
+//The Logger is designed for contexts in which every microsecond and every
+//allocation matters, so its API intentionally favors performance and type
+//safety over brevity. For most applications, the SugaredLogger strikes a
+//better balance between performance and ergonomics.
+
+// Logger提供快速、分层、结构化的日志记录，所有方法都是并发安全的。
+// 日志记录器是为对性能锱铢必较的应用场景而设计的，因此它的API有意地倾向于性能和类型安全，而不是简洁。
+// 对于大多数应用程序来说，SugaredLogger在性能和易用性之间取得更好的平衡。
+
 type Logger struct {
+
 	core zapcore.Core
 
 	development bool
@@ -51,20 +57,30 @@ type Logger struct {
 	callerSkip int
 }
 
-// New constructs a new Logger from the provided zapcore.Core and Options. If
-// the passed zapcore.Core is nil, it falls back to using a no-op
-// implementation.
+//New constructs a new Logger from the provided zapcore.Core and Options. If
+//the passed zapcore.Core is nil, it falls back to using a no-op
+//implementation.
 //
-// This is the most flexible way to construct a Logger, but also the most
-// verbose. For typical use cases, the highly-opinionated presets
-// (NewProduction, NewDevelopment, and NewExample) or the Config struct are
-// more convenient.
+//This is the most flexible way to construct a Logger, but also the most
+//verbose. For typical use cases, the highly-opinionated presets
+//(NewProduction, NewDevelopment, and NewExample) or the Config struct are
+//more convenient.
 //
-// For sample code, see the package-level AdvancedConfiguration example.
+//For sample code, see the package-level AdvancedConfiguration example.
+
+
+// New从提供的 zapcore.Core 和 Options 构造一个新的Logger。
+// 如果传递的zapcore.Core为nil，则它将回退到使用no-op实现。
+// 这是构建Logger最灵活的方法，也是最冗长的方法。
+//
+// 对于典型的用例，高度固定的预设（NewProduction，NewDevelopment和NewExample）或Config结构更方便。
+// 有关示例代码，请参阅包级别的AdvancedConfiguration示例。
+
 func New(core zapcore.Core, options ...Option) *Logger {
 	if core == nil {
 		return NewNop()
 	}
+
 	log := &Logger{
 		core:        core,
 		errorOutput: zapcore.Lock(os.Stderr),
@@ -119,18 +135,25 @@ func NewExample(options ...Option) *Logger {
 	return New(core).WithOptions(options...)
 }
 
-// Sugar wraps the Logger to provide a more ergonomic, but slightly slower,
-// API. Sugaring a Logger is quite inexpensive, so it's reasonable for a
-// single application to use both Loggers and SugaredLoggers, converting
-// between them on the boundaries of performance-sensitive code.
+//Sugar wraps the Logger to provide a more ergonomic, but slightly slower,
+//API. Sugaring a Logger is quite inexpensive, so it's reasonable for a
+//single application to use both Loggers and SugaredLoggers, converting
+//between them on the boundaries of performance-sensitive code.
+
+// Sugar封装了日志记录器，以提供更符合人体工程学的、但速度稍慢的API。
+// 对日志记录器进行糖化非常便宜，因此对于单个应用程序来说，同时使用日志记录器和糖化日志记录器是合理的，
+// 可以在性能敏感代码的边界上在两者之间进行转换。
+
 func (log *Logger) Sugar() *SugaredLogger {
 	core := log.clone()
 	core.callerSkip += 2
 	return &SugaredLogger{core}
 }
 
-// Named adds a new path segment to the logger's name. Segments are joined by
-// periods. By default, Loggers are unnamed.
+//Named adds a new path segment to the logger's name. Segments are joined by
+//periods. By default, Loggers are unnamed.
+
+// Named将新路径段追加到logger的名称。 默认情况下，记录器未命名。
 func (log *Logger) Named(s string) *Logger {
 	if s == "" {
 		return log
