@@ -20,7 +20,7 @@
 
 package zapcore
 
-import "github.com/blastbao/internal/color"
+import "github.com/blastbao/zap/internal/color"
 
 var (
 	_levelToColor = map[Level]color.Color{

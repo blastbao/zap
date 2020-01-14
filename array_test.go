@@ -24,7 +24,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 
 	"github.com/stretchr/testify/assert"
 )

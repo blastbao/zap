@@ -44,10 +44,10 @@ func TestIsZapFrame(t *testing.T) {
 	zapFrames := []string{
 		"github.com/blastbao.Stack",
 		"github.com/blastbao.(*SugaredLogger).log",
-		"github.com/blastbao/zapcore.(ArrayMarshalerFunc).MarshalLogArray",
+		"github.com/blastbao/zap/zapcore.(ArrayMarshalerFunc).MarshalLogArray",
 		"github.com/uber/tchannel-go/vendor/github.com/blastbao.Stack",
 		"github.com/uber/tchannel-go/vendor/github.com/blastbao.(*SugaredLogger).log",
-		"github.com/uber/tchannel-go/vendor/github.com/blastbao/zapcore.(ArrayMarshalerFunc).MarshalLogArray",
+		"github.com/uber/tchannel-go/vendor/github.com/blastbao/zap/zapcore.(ArrayMarshalerFunc).MarshalLogArray",
 	}
 	nonZapFrames := []string{
 		"github.com/uber/tchannel-go.NewChannel",

@@ -1,0 +1,627 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="8a8da206-af39-47c3-b4ab-863849dcb0d4" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/array.go" beforeDir="false" afterPath="$PROJECT_DIR$/array.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/array_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/array_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/benchmarks/zap_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/benchmarks/zap_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buffer/buffer.go" beforeDir="false" afterPath="$PROJECT_DIR$/buffer/buffer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/common_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc.go" beforeDir="false" afterPath="$PROJECT_DIR$/doc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encoder.go" beforeDir="false" afterPath="$PROJECT_DIR$/encoder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/encoder_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/encoder_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/error.go" beforeDir="false" afterPath="$PROJECT_DIR$/error.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/error_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/error_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/example_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/field.go" beforeDir="false" afterPath="$PROJECT_DIR$/field.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/field_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/field_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flag.go" beforeDir="false" afterPath="$PROJECT_DIR$/flag.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flag_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/flag_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global.go" beforeDir="false" afterPath="$PROJECT_DIR$/global.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/global_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/http_handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/http_handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/http_handler_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/http_handler_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/bufferpool/bufferpool.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/bufferpool/bufferpool.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/internal/ztest/doc.go" beforeDir="false" afterPath="$PROJECT_DIR$/internal/ztest/doc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/level.go" beforeDir="false" afterPath="$PROJECT_DIR$/level.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/level_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/level_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/logger.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logger_bench_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/logger_bench_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logger_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/logger_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/options.go" beforeDir="false" afterPath="$PROJECT_DIR$/options.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sink.go" beforeDir="false" afterPath="$PROJECT_DIR$/sink.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sink_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/sink_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stacktrace.go" beforeDir="false" afterPath="$PROJECT_DIR$/stacktrace.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stacktrace_ext_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/stacktrace_ext_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/stacktrace_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/stacktrace_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sugar.go" beforeDir="false" afterPath="$PROJECT_DIR$/sugar.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sugar_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/sugar_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/writer.go" beforeDir="false" afterPath="$PROJECT_DIR$/writer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/writer_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/writer_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/console_encoder.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/console_encoder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/console_encoder_bench_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/console_encoder_bench_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/core_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/core_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/doc.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/doc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/encoder.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/encoder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/encoder_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/encoder_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/entry.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/entry.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/entry_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/entry_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/error_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/error_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/field_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/field_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/hook_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/hook_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/json_encoder.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/json_encoder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/json_encoder_bench_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/json_encoder_bench_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/json_encoder_impl_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/json_encoder_impl_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/json_encoder_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/json_encoder_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/level_strings.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/level_strings.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/sampler_bench_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/sampler_bench_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/sampler_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/sampler_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/tee_logger_bench_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/tee_logger_bench_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/tee_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/tee_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/write_syncer_bench_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/write_syncer_bench_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapcore/write_syncer_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapcore/write_syncer_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapgrpc/zapgrpc.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapgrpc/zapgrpc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zapgrpc/zapgrpc_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zapgrpc/zapgrpc_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zaptest/doc.go" beforeDir="false" afterPath="$PROJECT_DIR$/zaptest/doc.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zaptest/logger.go" beforeDir="false" afterPath="$PROJECT_DIR$/zaptest/logger.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zaptest/logger_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zaptest/logger_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zaptest/observer/logged_entry.go" beforeDir="false" afterPath="$PROJECT_DIR$/zaptest/observer/logged_entry.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zaptest/observer/logged_entry_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zaptest/observer/logged_entry_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zaptest/observer/observer.go" beforeDir="false" afterPath="$PROJECT_DIR$/zaptest/observer/observer.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zaptest/observer/observer_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zaptest/observer/observer_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zaptest/timeout.go" beforeDir="false" afterPath="$PROJECT_DIR$/zaptest/timeout.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zaptest/timeout_test.go" beforeDir="false" afterPath="$PROJECT_DIR$/zaptest/timeout_test.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/zaptest/writer.go" beforeDir="false" afterPath="$PROJECT_DIR$/zaptest/writer.go" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/field.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="25" column="10" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="10" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/buffer/buffer.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1530">
+              <caret line="90" column="17" selection-start-line="90" selection-start-column="17" selection-end-line="90" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/buffer/pool.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="474">
+              <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/zapcore/console_encoder.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="657">
+              <caret line="45" column="28" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="28" />
+              <folding>
+                <element signature="e#1139#1238#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/internal/bufferpool/bufferpool.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="527">
+              <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/internal/color/color.go">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/internal/exit/exit.go">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/internal/readme/readme.go">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/internal/ztest/doc.go">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/internal/ztest/timeout.go">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <folding>
+                <element signature="e#1137#1179#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>go.uber.org/zap/zapcore</find>
+      <find>go.uber.org/zap</find>
+      <find>github.com/blastbao/</find>
+    </findStrings>
+    <replaceStrings>
+      <replace>go.uber.org/zap/zapcore</replace>
+      <replace>github.com/blastbao</replace>
+      <replace>github.com/blastbao/zap</replace>
+      <replace>github.com/blastbao/zap/</replace>
+    </replaceStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$</dir>
+    </dirStrings>
+  </component>
+  <component name="GOROOT" path="/usr/local/Cellar/go/1.11.5/libexec" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/../../../go.uber.org/zap/zapcore/core.go" />
+        <option value="$PROJECT_DIR$/../../../go.uber.org/zap/zapcore/level.go" />
+        <option value="$PROJECT_DIR$/logger.go" />
+        <option value="$PROJECT_DIR$/../../../go.uber.org/zap/zapcore/entry.go" />
+        <option value="$PROJECT_DIR$/config.go" />
+        <option value="$PROJECT_DIR$/writer.go" />
+        <option value="$PROJECT_DIR$/global.go" />
+        <option value="$PROJECT_DIR$/encoder.go" />
+        <option value="$PROJECT_DIR$/field.go" />
+        <option value="$PROJECT_DIR$/buffer/pool.go" />
+        <option value="$PROJECT_DIR$/zapcore/console_encoder.go" />
+        <option value="$PROJECT_DIR$/internal/bufferpool/bufferpool.go" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" fullScreen="true">
+    <option name="width" value="1680" />
+    <option name="height" value="1050" />
+  </component>
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+              <item name="buffer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+              <item name="internal" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+              <item name="internal" type="462c0819:PsiDirectoryNode" />
+              <item name="bufferpool" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+              <item name="internal" type="462c0819:PsiDirectoryNode" />
+              <item name="color" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+              <item name="internal" type="462c0819:PsiDirectoryNode" />
+              <item name="exit" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+              <item name="internal" type="462c0819:PsiDirectoryNode" />
+              <item name="readme" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+              <item name="internal" type="462c0819:PsiDirectoryNode" />
+              <item name="ztest" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+              <item name="zapcore" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="GOPATH &lt;zap&gt;" type="20ee2d1f:SyntheticLibraryElementNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="GOPATH &lt;zap&gt;" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="GOPATH &lt;zap&gt;" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="go.uber.org" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="GOPATH &lt;zap&gt;" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="go.uber.org" type="462c0819:PsiDirectoryNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="zap" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+              <item name="GOPATH &lt;zap&gt;" type="20ee2d1f:SyntheticLibraryElementNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="go.uber.org" type="462c0819:PsiDirectoryNode" />
+              <item name="zap" type="462c0819:PsiDirectoryNode" />
+              <item name="zapcore" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="go.gopath.indexing.explicitly.defined" value="true" />
+    <property name="go.sdk.automatically.set" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.17948718" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="8" />
+      <window_info anchor="bottom" id="Version Control" order="9" />
+      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../../../go.uber.org/zap/zapcore/core.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="29" column="12" selection-start-line="29" selection-start-column="12" selection-end-line="29" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../go.uber.org/zap/zapcore/level.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="780">
+          <caret line="180" column="17" selection-start-line="180" selection-start-column="5" selection-end-line="180" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zapcore/level.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-193" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zapcore/level_strings.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="17" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zapcore/marshaler.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-70" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zapcore/sampler.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1379" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../go.uber.org/multierr/error.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-5850" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../go.uber.org/zap/zapcore/entry.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3417">
+          <caret line="211" column="36" selection-start-line="211" selection-start-column="30" selection-end-line="211" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/check_license.sh">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/common_test.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../go.uber.org/zap/zapcore/encoder.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="311">
+          <caret line="221" column="5" selection-start-line="221" selection-start-column="5" selection-end-line="221" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/encoder_test.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../go.uber.org/zap/zapcore/json_encoder.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-6734">
+          <caret line="57" lean-forward="true" selection-start-line="57" selection-end-line="57" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/go/1.11.5/libexec/src/os/file.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="281" column="5" selection-start-line="281" selection-start-column="5" selection-end-line="281" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sink.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="281">
+          <caret line="56" column="18" lean-forward="true" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sink_test.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-138">
+          <caret line="43" column="14" selection-start-line="43" selection-start-column="4" selection-end-line="43" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/stacktrace.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="644">
+          <caret line="115" column="23" selection-start-line="115" selection-start-column="5" selection-end-line="115" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/writer_test.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/writer.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="797">
+          <caret line="106" column="21" lean-forward="true" selection-start-line="106" selection-start-column="21" selection-end-line="106" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../go.uber.org/zap/zapcore/write_syncer.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-19">
+          <caret line="65" column="24" selection-start-line="65" selection-start-column="19" selection-end-line="65" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/time.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sugar.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-4235" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logger_test.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/options.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1022" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/doc.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1090" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../../go.uber.org/zap/zapcore/console_encoder.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-546">
+          <caret line="66" column="8" selection-start-line="66" selection-start-column="4" selection-end-line="66" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/logger.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1173">
+          <caret line="78" column="5" selection-start-line="78" selection-start-column="5" selection-end-line="78" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/level.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1955">
+          <caret line="118" column="34" selection-start-line="118" selection-start-column="30" selection-end-line="118" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/global.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="1" selection-start-column="1" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flag.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/array.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="459">
+          <caret line="31" column="5" selection-start-line="31" selection-start-column="5" selection-end-line="31" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/Cellar/go/1.11.5/libexec/src/builtin/builtin.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1105">
+          <caret line="65" column="5" selection-start-line="65" selection-start-column="5" selection-end-line="65" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/error.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="986">
+          <caret line="62" column="12" selection-start-line="62" selection-start-column="8" selection-end-line="62" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2907">
+          <caret line="176" column="12" selection-start-line="176" selection-start-column="12" selection-end-line="176" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/encoder.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="595">
+          <caret line="35" column="34" selection-start-line="35" selection-start-column="27" selection-end-line="35" selection-end-column="44" />
+          <folding>
+            <element signature="e#1135#1198#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/field.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="10" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/internal/color/color.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/internal/exit/exit.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/internal/readme/readme.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/internal/ztest/doc.go">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/internal/ztest/timeout.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#1137#1179#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buffer/buffer.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1530">
+          <caret line="90" column="17" selection-start-line="90" selection-start-column="17" selection-end-line="90" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/buffer/pool.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="474">
+          <caret line="30" column="5" selection-start-line="30" selection-start-column="5" selection-end-line="30" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/zapcore/console_encoder.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="657">
+          <caret line="45" column="28" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="28" />
+          <folding>
+            <element signature="e#1139#1238#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/internal/bufferpool/bufferpool.go">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="527">
+          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

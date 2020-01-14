@@ -23,7 +23,7 @@ package zapcore
 import (
 	"time"
 
-	"github.com/blastbao/buffer"
+	"github.com/blastbao/zap/buffer"
 )
 
 // DefaultLineEnding defines the default line ending when writing logs.

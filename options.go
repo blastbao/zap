@@ -20,7 +20,7 @@
 
 package zap
 
-import "github.com/blastbao/zapcore"
+import "github.com/blastbao/zap/zapcore"
 
 // An Option configures a Logger.
 type Option interface {

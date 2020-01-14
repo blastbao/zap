@@ -27,7 +27,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/blastbao"
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 // TestJSONEncodeEntry is an more "integrated" test that makes it easier to get

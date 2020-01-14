@@ -25,7 +25,7 @@ import (
 	"testing"
 	"time"
 
-	. "github.com/blastbao/zapcore"
+	. "github.com/blastbao/zap/zapcore"
 )
 
 func BenchmarkJSONLogMarshalerFunc(b *testing.B) {

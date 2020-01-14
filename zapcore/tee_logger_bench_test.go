@@ -23,8 +23,8 @@ package zapcore_test
 import (
 	"testing"
 
-	"github.com/blastbao/internal/ztest"
-	. "github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/internal/ztest"
+	. "github.com/blastbao/zap/zapcore"
 )
 
 func withBenchedTee(b *testing.B, f func(Core)) {

@@ -23,7 +23,7 @@ package zap
 import (
 	"flag"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 // LevelFlag uses the standard library's flag.Var to declare a global flag

@@ -26,11 +26,11 @@ import (
 	"testing"
 	"time"
 
-	"github.com/blastbao/internal/exit"
-	"github.com/blastbao/internal/ztest"
+	"github.com/blastbao/zap/internal/exit"
+	"github.com/blastbao/zap/internal/ztest"
 
-	"github.com/blastbao/zapcore"
-	"github.com/blastbao/zaptest/observer"
+	"github.com/blastbao/zap/zapcore"
+	"github.com/blastbao/zap/zaptest/observer"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -273,7 +273,7 @@ func checkStdLogMessage(t *testing.T, msg string, logs *observer.ObservedLogs) {
 	assert.Equal(t, "redirected", entry.Entry.Message, "Unexpected entry message.")
 	assert.Regexp(
 		t,
-		`github.com/blastbao/global_test.go:\d+$`,
+		`github.com/blastbao/zap/global_test.go:\d+$`,
 		entry.Entry.Caller.String(),
 		"Unexpected caller annotation.",
 	)

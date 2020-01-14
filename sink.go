@@ -29,7 +29,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 const schemeFile = "file"

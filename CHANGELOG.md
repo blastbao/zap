@@ -24,7 +24,7 @@ Enhancements:
 * [#577][]: Add a top-level alias for `zapcore.Field` to clean up GoDoc.
 
 Bugfixes:
-* [#574][]: Add a missing import comment to `github.com/blastbao/buffer`.
+* [#574][]: Add a missing import comment to `github.com/blastbao/zap/buffer`.
 
 Thanks to @DiSiqueira and @djui for their contributions to this release.
 

@@ -19,7 +19,7 @@
 // THE SOFTWARE.
 
 // Package zapgrpc provides a logger that is compatible with grpclog.
-package zapgrpc // import "github.com/blastbao/zapgrpc"
+package zapgrpc // import "github.com/blastbao/zap/zapgrpc"
 
 import "github.com/blastbao"
 

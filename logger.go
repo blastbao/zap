@@ -28,7 +28,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 //A Logger provides fast, leveled, structured logging. All methods are safe

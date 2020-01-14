@@ -23,7 +23,7 @@ package zapcore
 import (
 	"testing"
 
-	"github.com/blastbao/internal/ztest"
+	"github.com/blastbao/zap/internal/ztest"
 )
 
 func BenchmarkMultiWriteSyncer(b *testing.B) {

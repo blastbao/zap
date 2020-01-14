@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 // ServeHTTP is a simple JSON endpoint that can report on or change the current

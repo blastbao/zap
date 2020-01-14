@@ -19,4 +19,4 @@
 // THE SOFTWARE.
 
 // Package zaptest provides a variety of helpers for testing log output.
-package zaptest // import "github.com/blastbao/zaptest"
+package zaptest // import "github.com/blastbao/zap/zaptest"

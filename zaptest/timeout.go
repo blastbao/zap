@@ -23,7 +23,7 @@ package zaptest
 import (
 	"time"
 
-	"github.com/blastbao/internal/ztest"
+	"github.com/blastbao/zap/internal/ztest"
 )
 
 // Timeout scales the provided duration by $TEST_TIMEOUT_SCALE.

@@ -27,7 +27,7 @@ import (
 	"os"
 	"sync"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 const (

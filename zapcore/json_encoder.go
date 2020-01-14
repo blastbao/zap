@@ -28,8 +28,8 @@ import (
 	"time"
 	"unicode/utf8"
 
-	"github.com/blastbao/buffer"
-	"github.com/blastbao/internal/bufferpool"
+	"github.com/blastbao/zap/buffer"
+	"github.com/blastbao/zap/internal/bufferpool"
 )
 
 // For JSON-escaping; see jsonEncoder.safeAddString below.

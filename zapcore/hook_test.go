@@ -23,8 +23,8 @@ package zapcore_test
 import (
 	"testing"
 
-	. "github.com/blastbao/zapcore"
-	"github.com/blastbao/zaptest/observer"
+	. "github.com/blastbao/zap/zapcore"
+	"github.com/blastbao/zap/zaptest/observer"
 
 	"github.com/stretchr/testify/assert"
 )

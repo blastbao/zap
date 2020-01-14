@@ -25,8 +25,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/blastbao/internal/ztest"
-	. "github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/internal/ztest"
+	. "github.com/blastbao/zap/zapcore"
 )
 
 var counterTestCases = [][]string{

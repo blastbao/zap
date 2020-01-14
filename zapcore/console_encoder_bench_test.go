@@ -23,7 +23,7 @@ package zapcore_test
 import (
 	"testing"
 
-	. "github.com/blastbao/zapcore"
+	. "github.com/blastbao/zap/zapcore"
 )
 
 func BenchmarkZapConsole(b *testing.B) {

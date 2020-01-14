@@ -31,7 +31,7 @@ import (
 	"testing"
 
 	"github.com/blastbao"
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -43,7 +43,7 @@ import (
 // which includes filenames.
 var _zapPackages = []string{
 	"github.com/blastbao.",
-	"github.com/blastbao/zapcore.",
+	"github.com/blastbao/zap/zapcore.",
 }
 
 func TestStacktraceFiltersZapLog(t *testing.T) {

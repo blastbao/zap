@@ -23,7 +23,7 @@ package zap
 import (
 	"testing"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 
 	"github.com/stretchr/testify/assert"
 )

@@ -24,8 +24,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/blastbao/zapcore"
-	"github.com/blastbao/zaptest/observer"
+	"github.com/blastbao/zap/zapcore"
+	"github.com/blastbao/zap/zaptest/observer"
 )
 
 func opts(opts ...Option) []Option {

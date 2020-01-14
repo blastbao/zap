@@ -25,7 +25,7 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 var (

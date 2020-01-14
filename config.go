@@ -24,7 +24,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 // SamplingConfig sets a sampling strategy for the logger. Sampling caps the

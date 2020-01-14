@@ -24,7 +24,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/blastbao/internal/exit"
+	"github.com/blastbao/zap/internal/exit"
 
 	"github.com/stretchr/testify/assert"
 )

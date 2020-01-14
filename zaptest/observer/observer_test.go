@@ -28,8 +28,8 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/blastbao"
-	"github.com/blastbao/zapcore"
-	. "github.com/blastbao/zaptest/observer"
+	"github.com/blastbao/zap/zapcore"
+	. "github.com/blastbao/zap/zaptest/observer"
 )
 
 func assertEmpty(t testing.TB, logs *ObservedLogs) {

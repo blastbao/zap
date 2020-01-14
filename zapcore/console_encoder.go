@@ -24,8 +24,8 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/blastbao/buffer"
-	"github.com/blastbao/internal/bufferpool"
+	"github.com/blastbao/zap/buffer"
+	"github.com/blastbao/zap/internal/bufferpool"
 )
 
 var _sliceEncoderPool = sync.Pool{

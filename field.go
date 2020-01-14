@@ -25,7 +25,7 @@ import (
 	"math"
 	"time"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 // Field is an alias for Field. Aliasing this type dramatically

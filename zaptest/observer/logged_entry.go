@@ -20,7 +20,7 @@
 
 package observer
 
-import "github.com/blastbao/zapcore"
+import "github.com/blastbao/zap/zapcore"
 
 // An LoggedEntry is an encoding-agnostic representation of a log message.
 // Field availability is context dependant.

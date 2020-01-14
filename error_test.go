@@ -24,7 +24,7 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 
 	richErrors "github.com/pkg/errors"
 	"github.com/stretchr/testify/assert"

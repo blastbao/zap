@@ -28,7 +28,7 @@ import (
 	"time"
 
 	"github.com/blastbao"
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 func Example_presets() {

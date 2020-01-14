@@ -24,7 +24,7 @@ import (
 	"bytes"
 
 	"github.com/blastbao"
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 // LoggerOption configures the test logger built by NewLogger.

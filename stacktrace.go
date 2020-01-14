@@ -25,7 +25,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/blastbao/internal/bufferpool"
+	"github.com/blastbao/zap/internal/bufferpool"
 )
 
 const _zapPackage = "github.com/blastbao"

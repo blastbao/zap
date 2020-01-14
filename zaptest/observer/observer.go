@@ -22,14 +22,14 @@
 // encoding-agnostic repesentation of log entries. It's useful for
 // applications that want to unit test their log output without tying their
 // tests to a particular output encoding.
-package observer // import "github.com/blastbao/zaptest/observer"
+package observer // import "github.com/blastbao/zap/zaptest/observer"
 
 import (
 	"strings"
 	"sync"
 	"time"
 
-	"github.com/blastbao/zapcore"
+	"github.com/blastbao/zap/zapcore"
 )
 
 // ObservedLogs is a concurrency-safe, ordered collection of observed logs.

@@ -24,9 +24,9 @@ import (
 	"errors"
 	"testing"
 
-	"github.com/blastbao/internal/ztest"
-	. "github.com/blastbao/zapcore"
-	"github.com/blastbao/zaptest/observer"
+	"github.com/blastbao/zap/internal/ztest"
+	. "github.com/blastbao/zap/zapcore"
+	"github.com/blastbao/zap/zaptest/observer"
 
 	"github.com/stretchr/testify/assert"
 )
