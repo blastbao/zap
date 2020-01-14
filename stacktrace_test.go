@@ -42,12 +42,12 @@ func TestTakeStacktrace(t *testing.T) {
 
 func TestIsZapFrame(t *testing.T) {
 	zapFrames := []string{
-		"go.uber.org/zap.Stack",
-		"go.uber.org/zap.(*SugaredLogger).log",
-		"go.uber.org/zap/zapcore.(ArrayMarshalerFunc).MarshalLogArray",
-		"github.com/uber/tchannel-go/vendor/go.uber.org/zap.Stack",
-		"github.com/uber/tchannel-go/vendor/go.uber.org/zap.(*SugaredLogger).log",
-		"github.com/uber/tchannel-go/vendor/go.uber.org/zap/zapcore.(ArrayMarshalerFunc).MarshalLogArray",
+		"github.com/blastbao.Stack",
+		"github.com/blastbao.(*SugaredLogger).log",
+		"github.com/blastbao/zapcore.(ArrayMarshalerFunc).MarshalLogArray",
+		"github.com/uber/tchannel-go/vendor/github.com/blastbao.Stack",
+		"github.com/uber/tchannel-go/vendor/github.com/blastbao.(*SugaredLogger).log",
+		"github.com/uber/tchannel-go/vendor/github.com/blastbao/zapcore.(ArrayMarshalerFunc).MarshalLogArray",
 	}
 	nonZapFrames := []string{
 		"github.com/uber/tchannel-go.NewChannel",
