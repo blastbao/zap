@@ -26,9 +26,11 @@ import (
 	"github.com/blastbao/zap/zapcore"
 )
 
-var _errArrayElemPool = sync.Pool{New: func() interface{} {
-	return &errArrayElem{}
-}}
+var _errArrayElemPool = sync.Pool {
+	New: func() interface{} {
+		return &errArrayElem{}
+	},
+}
 
 // Error is shorthand for the common idiom NamedError("error", err).
 func Error(err error) Field {

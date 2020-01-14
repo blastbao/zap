@@ -217,11 +217,19 @@ func (e *NameEncoder) UnmarshalText(text []byte) error {
 	return nil
 }
 
-// An EncoderConfig allows users to configure the concrete encoders supplied by
-// zapcore.
+// An EncoderConfig allows users to configure the concrete encoders supplied by zapcore.
+//
+//
+// MessageKey、LevelKey、TimeKey、NameKey、CallerKey、StacktraceKey 用来配置日志序列化为 json 时的key；
+// LineEnding 用来配置行分隔符；
+// EncodeLevel、EncodeTime、EncodeDuration、EncodeCaller、EncodeName 用来配置对于时间、调用点、级别、Logger 名称等的编码器，
+// 如果希望显示不同的时间格式或者日志级别格式，可以使用这些配置。
+//
 type EncoderConfig struct {
-	// Set the keys used for each log entry. If any key is empty, that portion
-	// of the entry is omitted.
+
+	// Set the keys used for each log entry.
+	// If any key is empty, that portion of the entry is omitted.
+
 	MessageKey    string `json:"messageKey" yaml:"messageKey"`
 	LevelKey      string `json:"levelKey" yaml:"levelKey"`
 	TimeKey       string `json:"timeKey" yaml:"timeKey"`
@@ -229,22 +237,27 @@ type EncoderConfig struct {
 	CallerKey     string `json:"callerKey" yaml:"callerKey"`
 	StacktraceKey string `json:"stacktraceKey" yaml:"stacktraceKey"`
 	LineEnding    string `json:"lineEnding" yaml:"lineEnding"`
-	// Configure the primitive representations of common complex types. For
-	// example, some users may want all time.Times serialized as floating-point
-	// seconds since epoch, while others may prefer ISO8601 strings.
+
+	// Configure the primitive representations of common complex types.
+	// For example, some users may want all time.Times serialized as floating-point seconds since epoch,
+	// while others may prefer ISO8601 strings.
+
 	EncodeLevel    LevelEncoder    `json:"levelEncoder" yaml:"levelEncoder"`
 	EncodeTime     TimeEncoder     `json:"timeEncoder" yaml:"timeEncoder"`
 	EncodeDuration DurationEncoder `json:"durationEncoder" yaml:"durationEncoder"`
 	EncodeCaller   CallerEncoder   `json:"callerEncoder" yaml:"callerEncoder"`
-	// Unlike the other primitive type encoders, EncodeName is optional. The
-	// zero value falls back to FullNameEncoder.
+
+	// Unlike the other primitive type encoders, EncodeName is optional.
+	// The zero value falls back to FullNameEncoder.
 	EncodeName NameEncoder `json:"nameEncoder" yaml:"nameEncoder"`
 }
 
 // ObjectEncoder is a strongly-typed, encoding-agnostic interface for adding a
-// map- or struct-like object to the logging context. Like maps, ObjectEncoders
-// aren't safe for concurrent use (though typical use shouldn't require locks).
+// map- or struct-like object to the logging context.
+//
+// Like maps, ObjectEncoders aren't safe for concurrent use (though typical use shouldn't require locks).
 type ObjectEncoder interface {
+
 	// Logging-specific marshalers.
 	AddArray(key string, marshaler ArrayMarshaler) error
 	AddObject(key string, marshaler ObjectMarshaler) error
@@ -272,8 +285,7 @@ type ObjectEncoder interface {
 	AddUint8(key string, value uint8)
 	AddUintptr(key string, value uintptr)
 
-	// AddReflected uses reflection to serialize arbitrary objects, so it's slow
-	// and allocation-heavy.
+	// AddReflected uses reflection to serialize arbitrary objects, so it's slow and allocation-heavy.
 	AddReflected(key string, value interface{}) error
 	// OpenNamespace opens an isolated namespace where all subsequent fields will
 	// be added. Applications can use namespaces to prevent key collisions when

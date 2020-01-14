@@ -39,9 +39,9 @@ import (
 //safety over brevity. For most applications, the SugaredLogger strikes a
 //better balance between performance and ergonomics.
 
-// Logger提供快速、分层、结构化的日志记录，所有方法都是并发安全的。
-// 日志记录器是为对性能锱铢必较的应用场景而设计的，因此它的API有意地倾向于性能和类型安全，而不是简洁。
-// 对于大多数应用程序来说，SugaredLogger在性能和易用性之间取得更好的平衡。
+// Logger 提供快速、分层、结构化的日志记录，所有方法都是并发安全的。
+// 日志记录器是为对性能锱铢必较的应用场景而设计的，因此它的 API 有意地倾向于性能和类型安全，而不是简洁。
+// 对于大多数应用程序来说，SugaredLogger 在性能和易用性之间取得更好的平衡。
 
 type Logger struct {
 
@@ -57,6 +57,20 @@ type Logger struct {
 	callerSkip int
 }
 
+
+
+// zap 提供了两类构造 Logger 的方式，一类是使用了建造者模式的 Build 方法，一类是接收 Option 参数的 New 方法，
+// 这两类方法提供的能力完全相同，只是给用户提供了不同的选择。
+
+
+
+
+
+
+
+
+
+
 //New constructs a new Logger from the provided zapcore.Core and Options. If
 //the passed zapcore.Core is nil, it falls back to using a no-op
 //implementation.
@@ -68,13 +82,12 @@ type Logger struct {
 //
 //For sample code, see the package-level AdvancedConfiguration example.
 
-
-// New从提供的 zapcore.Core 和 Options 构造一个新的Logger。
-// 如果传递的zapcore.Core为nil，则它将回退到使用no-op实现。
-// 这是构建Logger最灵活的方法，也是最冗长的方法。
+// New() 从提供的 zapcore.Core 和 Options 构造一个新的Logger。
+// 如果传递的 zapcore.Core 为 nil ，则它将回退到使用 no-op 实现。
+// 这是构建 Logger 最灵活的方法，但也是最冗长的方法。
 //
-// 对于典型的用例，高度固定的预设（NewProduction，NewDevelopment和NewExample）或Config结构更方便。
-// 有关示例代码，请参阅包级别的AdvancedConfiguration示例。
+// 对于典型的用例，高度固定的预设（ NewProduction，NewDevelopment 和 NewExample ）或 Config 结构更方便。
+// 有关示例代码，请参阅包级别的 AdvancedConfiguration 示例。
 
 func New(core zapcore.Core, options ...Option) *Logger {
 	if core == nil {
@@ -101,6 +114,8 @@ func NewNop() *Logger {
 		addStack:    zapcore.FatalLevel + 1,
 	}
 }
+
+
 
 // NewProduction builds a sensible production Logger that writes InfoLevel and
 // above logs to standard error as JSON.

@@ -50,46 +50,92 @@ type SamplingConfig struct {
 //
 // For an example showing runtime log level changes, see the documentation for
 // AtomicLevel.
+
+
+// Config 这个结构体每个字段都有 json 和 yaml 的标注，也就是说这些配置不仅仅可以在代码中赋值，
+// 也可以从配置文件中直接反序列化得到。
+
 type Config struct {
+
 	// Level is the minimum enabled logging level. Note that this is a dynamic
 	// level, so calling Config.Level.SetLevel will atomically change the log
 	// level of all loggers descended from this config.
+	//
+	// Level：故名思意，Level 是用来配置日志级别的，即日志的最低输出级别。
+	// 这里的 AtomicLevel 虽然是个结构体， 但是如果使用配置文件直接反序列化，
+	// 可以支持配置成字符串“DEBUG”，“INFO”等，这一点很方便，实现也有一点小技巧，后面说。
 	Level AtomicLevel `json:"level" yaml:"level"`
+
 	// Development puts the logger in development mode, which changes the
 	// behavior of DPanicLevel and takes stacktraces more liberally.
+	//
+	// 这个字段的含义是用来标记是否为开发者模式，在开发者模式下，日志输出的一些行为会和生产环境上不同。
 	Development bool `json:"development" yaml:"development"`
+
 	// DisableCaller stops annotating logs with the calling function's file
 	// name and line number. By default, all logs are annotated.
+	//
+	// 用来标记是否开启行号和文件名显示功能。
 	DisableCaller bool `json:"disableCaller" yaml:"disableCaller"`
+
 	// DisableStacktrace completely disables automatic stacktrace capturing. By
 	// default, stacktraces are captured for WarnLevel and above logs in
 	// development and ErrorLevel and above in production.
+	//
+	// 标记是否开启调用栈追踪能力，即在打印异常日志时，是否打印调用栈。
 	DisableStacktrace bool `json:"disableStacktrace" yaml:"disableStacktrace"`
+
 	// Sampling sets a sampling policy. A nil SamplingConfig disables sampling.
+	//
+	// Sampling 实现了日志的流控功能，或者叫采样配置，主要有两个配置参数，Initial 和 Thereafter，
+	// 实现的效果是在 1s 的时间单位内，如果某个日志级别下同样内容的日志输出数量超过了 Initial 的数量，
+	// 那么超过之后，每隔 Thereafter 的数量，才会再输出一次。是一个对日志输出的保护功能。
 	Sampling *SamplingConfig `json:"sampling" yaml:"sampling"`
+
 	// Encoding sets the logger's encoding. Valid values are "json" and
-	// "console", as well as any third-party encodings registered via
-	// RegisterEncoder.
+	// "console", as well as any third-party encodings registered via RegisterEncoder.
+	//
+	// 用来指定日志的编码器，也就是用户在调用日志打印接口时，zap 内部使用什么样的编码器将日志信息编码为日志条目，
+	// 日志的编码也是日志组件的一个重点。默认支持两种配置，json 和 console ，用户可以自行实现自己需要的编码器并注册进日志组件，
+	// 实现自定义编码的能力。
 	Encoding string `json:"encoding" yaml:"encoding"`
-	// EncoderConfig sets options for the chosen encoder. See
-	// zapcore.EncoderConfig for details.
+
+	// EncoderConfig sets options for the chosen encoder. See zapcore.EncoderConfig for details.
+	//
+	// EncoderConfig 是对于日志编码器的配置，支持的配置参数也很丰富。
 	EncoderConfig zapcore.EncoderConfig `json:"encoderConfig" yaml:"encoderConfig"`
+
+
 	// OutputPaths is a list of URLs or file paths to write logging output to.
 	// See Open for details.
+	//
+	// 用来指定日志的输出路径，不过这个路径不仅仅支持文件路径和标准输出，还支持其他的自定义协议，
+	// 当然如果要使用自定义协议，也需要使用 RegisterSink 方法先注册一个该协议对应的工厂方法，该工厂方法实现了 Sink 接口。
 	OutputPaths []string `json:"outputPaths" yaml:"outputPaths"`
+
+
 	// ErrorOutputPaths is a list of URLs to write internal logger errors to.
 	// The default is standard error.
 	//
 	// Note that this setting only affects internal errors; for sample code that
 	// sends error-level logs to a different location from info- and debug-level
 	// logs, see the package-level AdvancedConfiguration example.
+	//
+	//
+	// 与 OutputPaths 类似，不过用来指定的是错误日志的输出，不过要注意，
+	// 这个错误日志不是业务的错误（ERROR）日志，而是 zap 中出现的内部错误，将会被定向到这个路径下。
 	ErrorOutputPaths []string `json:"errorOutputPaths" yaml:"errorOutputPaths"`
+
+
 	// InitialFields is a collection of fields to add to the root logger.
+	//
+	// 理解这个参数需要结合 zap 的结构化日志输出的机制来理解，后面会详细解释，这里只要知道有这个配置时，日志输出内容中会包含这个 map 。
 	InitialFields map[string]interface{} `json:"initialFields" yaml:"initialFields"`
 }
 
-// NewProductionEncoderConfig returns an opinionated EncoderConfig for
-// production environments.
+
+
+// NewProductionEncoderConfig returns an opinionated EncoderConfig for production environments.
 func NewProductionEncoderConfig() zapcore.EncoderConfig {
 	return zapcore.EncoderConfig{
 		TimeKey:        "ts",
@@ -104,6 +150,7 @@ func NewProductionEncoderConfig() zapcore.EncoderConfig {
 		EncodeDuration: zapcore.SecondsDurationEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 	}
+
 }
 
 // NewProductionConfig is a reasonable production logging configuration.
@@ -111,6 +158,9 @@ func NewProductionEncoderConfig() zapcore.EncoderConfig {
 //
 // It uses a JSON encoder, writes to standard error, and enables sampling.
 // Stacktraces are automatically included on logs of ErrorLevel and above.
+//
+//
+//
 func NewProductionConfig() Config {
 	return Config{
 		Level: NewAtomicLevelAt(InfoLevel),
@@ -126,8 +176,8 @@ func NewProductionConfig() Config {
 	}
 }
 
-// NewDevelopmentEncoderConfig returns an opinionated EncoderConfig for
-// development environments.
+
+// NewDevelopmentEncoderConfig returns an opinionated EncoderConfig for development environments.
 func NewDevelopmentEncoderConfig() zapcore.EncoderConfig {
 	return zapcore.EncoderConfig{
 		// Keys can be anything except the empty string.
@@ -145,11 +195,12 @@ func NewDevelopmentEncoderConfig() zapcore.EncoderConfig {
 	}
 }
 
+
 // NewDevelopmentConfig is a reasonable development logging configuration.
 // Logging is enabled at DebugLevel and above.
 //
-// It enables development mode (which makes DPanicLevel logs panic), uses a
-// console encoder, writes to standard error, and disables sampling.
+// It enables development mode (which makes DPanicLevel logs panic),
+// uses a console encoder, writes to standard error, and disables sampling.
 // Stacktraces are automatically included on logs of WarnLevel and above.
 func NewDevelopmentConfig() Config {
 	return Config{
@@ -164,6 +215,7 @@ func NewDevelopmentConfig() Config {
 
 // Build constructs a logger from the Config and Options.
 func (cfg Config) Build(opts ...Option) (*Logger, error) {
+
 	enc, err := cfg.buildEncoder()
 	if err != nil {
 		return nil, err
@@ -178,9 +230,11 @@ func (cfg Config) Build(opts ...Option) (*Logger, error) {
 		zapcore.NewCore(enc, sink, cfg.Level),
 		cfg.buildOptions(errSink)...,
 	)
+
 	if len(opts) > 0 {
 		log = log.WithOptions(opts...)
 	}
+
 	return log, nil
 }
 
@@ -199,6 +253,7 @@ func (cfg Config) buildOptions(errSink zapcore.WriteSyncer) []Option {
 	if cfg.Development {
 		stackLevel = WarnLevel
 	}
+
 	if !cfg.DisableStacktrace {
 		opts = append(opts, AddStacktrace(stackLevel))
 	}

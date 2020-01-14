@@ -31,13 +31,19 @@ import (
 var (
 	errNoEncoderNameSpecified = errors.New("no encoder name specified")
 
-	_encoderNameToConstructor = map[string] func(zapcore.EncoderConfig) (zapcore.Encoder, error){
+	_encoderNameToConstructor = map[string] func(zapcore.EncoderConfig) (zapcore.Encoder, error) {
+
+
+
 		"console": func(encoderConfig zapcore.EncoderConfig) (zapcore.Encoder, error) {
 			return zapcore.NewConsoleEncoder(encoderConfig), nil
 		},
+
+
 		"json": func(encoderConfig zapcore.EncoderConfig) (zapcore.Encoder, error) {
 			return zapcore.NewJSONEncoder(encoderConfig), nil
 		},
+
 	}
 	_encoderMutex sync.RWMutex
 )
@@ -49,10 +55,10 @@ var (
 //Attempting to register an encoder whose name is already taken returns an
 //error.
 
-// RegisterEncoder注册一个编码器构造函数，然后配置结构可以引用该构造函数。
-// 默认情况下，“json”和“console”编码器是注册的。
+// RegisterEncoder 注册一个编码器构造函数，然后配置结构可以引用该构造函数。
+// 默认情况下，“json” 和 “console” 编码器是注册的。
 // 尝试注册一个名称已被采用的编码器将返回一个错误。
-func RegisterEncoder(name string, constructor func(zapcore.EncoderConfig) (zapcore.Encoder, error)) error {
+func RegisterEncoder(name string, constructor func(zapcore.EncoderConfig) (zapcore.Encoder, error) ) error {
 	_encoderMutex.Lock()
 	defer _encoderMutex.Unlock()
 	if name == "" {
