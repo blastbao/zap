@@ -23,7 +23,7 @@ package zaptest
 import (
 	"bytes"
 
-	"github.com/blastbao"
+	"github.com/blastbao/zap"
 	"github.com/blastbao/zap/zapcore"
 )
 

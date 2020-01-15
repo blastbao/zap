@@ -27,7 +27,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/blastbao"
+	"github.com/blastbao/zap"
 	"github.com/blastbao/zap/internal/ztest"
 	"github.com/blastbao/zap/zapcore"
 

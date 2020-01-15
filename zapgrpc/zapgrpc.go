@@ -21,7 +21,7 @@
 // Package zapgrpc provides a logger that is compatible with grpclog.
 package zapgrpc // import "github.com/blastbao/zap/zapgrpc"
 
-import "github.com/blastbao"
+import "github.com/blastbao/zap"
 
 // An Option overrides a Logger's default configuration.
 type Option interface {

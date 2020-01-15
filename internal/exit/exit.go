@@ -40,7 +40,9 @@ type StubbedExit struct {
 
 // Stub substitutes a fake for the call to os.Exit(1).
 func Stub() *StubbedExit {
-	s := &StubbedExit{prev: real}
+	s := &StubbedExit{
+		prev: real,
+	}
 	real = s.exit
 	return s
 }

@@ -23,7 +23,7 @@ package zapgrpc
 import (
 	"testing"
 
-	"github.com/blastbao"
+	"github.com/blastbao/zap"
 	"github.com/blastbao/zap/zapcore"
 	"github.com/blastbao/zap/zaptest/observer"
 

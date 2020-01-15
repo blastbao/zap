@@ -270,6 +270,8 @@ type EncoderConfig struct {
 // map- or struct-like object to the logging context.
 //
 // Like maps, ObjectEncoders aren't safe for concurrent use (though typical use shouldn't require locks).
+
+
 type ObjectEncoder interface {
 
 	// Logging-specific marshalers.

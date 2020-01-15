@@ -24,11 +24,11 @@ package zapcore
 // to wrap in a more user-friendly API.
 type Core interface {
 
+	// LevelEnabler 根据日志级别判断日志是否应该输出
 	LevelEnabler
 
 	// With adds structured context to the Core.
 	With([]Field) Core
-
 
 	// Check determines whether the supplied Entry should be logged (using the
 	// embedded LevelEnabler and possibly some extra logic). If the entry
@@ -50,8 +50,8 @@ type Core interface {
 	// Sync flushes buffered logs (if any).
 	Sync() error
 
-
 }
+
 
 type nopCore struct{}
 
@@ -62,6 +62,8 @@ func (n nopCore) With([]Field) Core                           { return n }
 func (nopCore) Check(_ Entry, ce *CheckedEntry) *CheckedEntry { return ce }
 func (nopCore) Write(Entry, []Field) error                    { return nil }
 func (nopCore) Sync() error                                   { return nil }
+
+
 
 // NewCore creates a Core that writes logs to a WriteSyncer.
 func NewCore(enc Encoder, ws WriteSyncer, enab LevelEnabler) Core {
@@ -80,7 +82,9 @@ type ioCore struct {
 
 func (c *ioCore) With(fields []Field) Core {
 	clone := c.clone()
+
 	addFields(clone.enc, fields)
+
 	return clone
 }
 

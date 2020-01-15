@@ -255,8 +255,6 @@ func (cfg Config) Build(opts ...Option) (*Logger, error) {
 	return log, nil
 }
 
-
-
 //
 func (cfg Config) buildOptions(errSink zapcore.WriteSyncer) []Option {
 

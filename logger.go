@@ -45,12 +45,13 @@ import (
 
 type Logger struct {
 
-	//
+	// 默认 ioCore
 	core zapcore.Core
 
 	// 开发者模式
 	development bool
 
+	// logger name
 	name        string
 
 	// 日志组件中出现异常时的输出
@@ -66,48 +67,29 @@ type Logger struct {
 	callerSkip int
 }
 
-
-
-// zap 提供了两类构造 Logger 的方式，一类是使用了建造者模式的 Build 方法，一类是接收 Option 参数的 New 方法，
-// 这两类方法提供的能力完全相同，只是给用户提供了不同的选择。
-
-
-
-
-
-
-
-
-
-
-//New constructs a new Logger from the provided zapcore.Core and Options. If
-//the passed zapcore.Core is nil, it falls back to using a no-op
-//implementation.
+// New constructs a new Logger from the provided zapcore.Core and Options.
+// If the passed zapcore.Core is nil, it falls back to using a no-op implementation.
 //
-//This is the most flexible way to construct a Logger, but also the most
-//verbose. For typical use cases, the highly-opinionated presets
-//(NewProduction, NewDevelopment, and NewExample) or the Config struct are
-//more convenient.
+// This is the most flexible way to construct a Logger, but also the most verbose.
+// For typical use cases, the highly-opinionated presets (NewProduction, NewDevelopment, and NewExample)
+// or the Config struct are more convenient.
 //
-//For sample code, see the package-level AdvancedConfiguration example.
-
-// New() 从提供的 zapcore.Core 和 Options 构造一个新的Logger。
-// 如果传递的 zapcore.Core 为 nil ，则它将回退到使用 no-op 实现。
-// 这是构建 Logger 最灵活的方法，但也是最冗长的方法。
-//
-// 对于典型的用例，高度固定的预设（ NewProduction，NewDevelopment 和 NewExample ）或 Config 结构更方便。
-// 有关示例代码，请参阅包级别的 AdvancedConfiguration 示例。
-
+// For sample code, see the package-level AdvancedConfiguration example.
 func New(core zapcore.Core, options ...Option) *Logger {
+
+	// 如果 core 为 nil 则创建 NopLogger 并返回
 	if core == nil {
 		return NewNop()
 	}
 
+	// 构造 Logger
 	log := &Logger{
 		core:        core,
-		errorOutput: zapcore.Lock(os.Stderr),
-		addStack:    zapcore.FatalLevel + 1,
+		errorOutput: zapcore.Lock(os.Stderr),  	// zap 内部错误输出到 stdErr
+		addStack:    zapcore.FatalLevel + 1, 	// 对指定的日志等级增加调用栈输出能力
 	}
+
+	// 在 logger 上应用各个 options
 	return log.WithOptions(options...)
 }
 
@@ -116,6 +98,8 @@ func New(core zapcore.Core, options ...Option) *Logger {
 //
 // Using WithOptions to replace the Core or error output of a no-op Logger can
 // re-enable logging.
+//
+//
 func NewNop() *Logger {
 	return &Logger{
 		core:        zapcore.NewNopCore(),
@@ -164,7 +148,7 @@ func NewExample(options ...Option) *Logger {
 //single application to use both Loggers and SugaredLoggers, converting
 //between them on the boundaries of performance-sensitive code.
 
-// Sugar封装了日志记录器，以提供更符合人体工程学的、但速度稍慢的API。
+// Sugar 封装了日志记录器，以提供更符合人体工程学的、但速度稍慢的 API 。
 // 对日志记录器进行糖化非常便宜，因此对于单个应用程序来说，同时使用日志记录器和糖化日志记录器是合理的，
 // 可以在性能敏感代码的边界上在两者之间进行转换。
 
@@ -174,14 +158,15 @@ func (log *Logger) Sugar() *SugaredLogger {
 	return &SugaredLogger{core}
 }
 
-//Named adds a new path segment to the logger's name. Segments are joined by
-//periods. By default, Loggers are unnamed.
+// Named adds a new path segment to the logger's name.
+// Segments are joined by periods. By default, Loggers are unnamed.
 
-// Named将新路径段追加到logger的名称。 默认情况下，记录器未命名。
 func (log *Logger) Named(s string) *Logger {
+
 	if s == "" {
 		return log
 	}
+
 	l := log.clone()
 	if log.name == "" {
 		l.name = s
@@ -191,8 +176,9 @@ func (log *Logger) Named(s string) *Logger {
 	return l
 }
 
-// WithOptions clones the current Logger, applies the supplied Options, and
-// returns the resulting Logger. It's safe to use concurrently.
+
+// WithOptions clones the current Logger, applies the supplied Options, and returns the resulting Logger.
+// It's safe to use concurrently.
 func (log *Logger) WithOptions(opts ...Option) *Logger {
 	c := log.clone()
 	for _, opt := range opts {
@@ -201,8 +187,10 @@ func (log *Logger) WithOptions(opts ...Option) *Logger {
 	return c
 }
 
-// With creates a child logger and adds structured context to it. Fields added
-// to the child don't affect the parent, and vice versa.
+
+
+// With creates a child logger and adds structured context to it.
+// Fields added to the child don't affect the parent, and vice versa.
 func (log *Logger) With(fields ...Field) *Logger {
 	if len(fields) == 0 {
 		return log
@@ -212,28 +200,46 @@ func (log *Logger) With(fields ...Field) *Logger {
 	return l
 }
 
-// Check returns a CheckedEntry if logging a message at the specified level
-// is enabled. It's a completely optional optimization; in high-performance
-// applications, Check can help avoid allocating a slice to hold fields.
+
+
+
+// Check returns a CheckedEntry if logging a message at the specified level is enabled.
+// It's a completely optional optimization; in high-performance applications,
+// Check can help avoid allocating a slice to hold fields.
 func (log *Logger) Check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 	return log.check(lvl, msg)
 }
 
-// Debug logs a message at DebugLevel. The message includes any fields passed
-// at the log site, as well as any fields accumulated on the logger.
+
+
+
+
+// Debug logs a message at DebugLevel.
+// The message includes any fields passed at the log site,
+// as well as any fields accumulated on the logger.
 func (log *Logger) Debug(msg string, fields ...Field) {
 	if ce := log.check(DebugLevel, msg); ce != nil {
 		ce.Write(fields...)
 	}
 }
 
-// Info logs a message at InfoLevel. The message includes any fields passed
-// at the log site, as well as any fields accumulated on the logger.
+// Info logs a message at InfoLevel.
+// The message includes any fields passed at the log site,
+// as well as any fields accumulated on the logger.
 func (log *Logger) Info(msg string, fields ...Field) {
+
+
+
+
 	if ce := log.check(InfoLevel, msg); ce != nil {
 		ce.Write(fields...)
 	}
 }
+
+
+
+
+
 
 // Warn logs a message at WarnLevel. The message includes any fields passed
 // at the log site, as well as any fields accumulated on the logger.

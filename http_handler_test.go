@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zap_test
+package zap
 
 import (
 	"encoding/json"
@@ -30,9 +30,7 @@ import (
 	"strings"
 	"testing"
 
-	. "github.com/blastbao"
 	"github.com/blastbao/zap/zapcore"
-
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 )
