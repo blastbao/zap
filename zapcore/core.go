@@ -73,9 +73,9 @@ func NewCore(enc Encoder, ws WriteSyncer, enab LevelEnabler) Core {
 }
 
 type ioCore struct {
-	LevelEnabler
-	enc Encoder
-	out WriteSyncer
+	LevelEnabler 		// 根据日志级别判断日志是否应该输出
+	enc Encoder			// 日志编码器
+	out WriteSyncer 	// 日志输出器
 }
 
 func (c *ioCore) With(fields []Field) Core {
@@ -101,20 +101,24 @@ func (c *ioCore) Check(ent Entry, ce *CheckedEntry) *CheckedEntry {
 
 func (c *ioCore) Write(ent Entry, fields []Field) error {
 
-
+	// 调用 EncodeEntry() 将 ent, fields 编码成字节序列
 	buf, err := c.enc.EncodeEntry(ent, fields)
 	if err != nil {
 		return err
 	}
 
-
+	// 调用 Write 方法进行真正的输出
 	_, err = c.out.Write(buf.Bytes())
+
+	// 释放 buf
 	buf.Free()
 
+	// 错误检查
 	if err != nil {
 		return err
 	}
 
+	// 如果错误级别大于 Error 则立即刷盘
 	if ent.Level > ErrorLevel {
 		// Since we may be crashing the program, sync the output. Ignore Sync
 		// errors, pending a clean solution to issue #370.

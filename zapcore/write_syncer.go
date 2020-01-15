@@ -27,22 +27,31 @@ import (
 	"go.uber.org/multierr"
 )
 
-// A WriteSyncer is an io.Writer that can also flush any buffered data. Note
-// that *os.File (and thus, os.Stderr and os.Stdout) implement WriteSyncer.
+// A WriteSyncer is an io.Writer that can also flush any buffered data.
+// Note that *os.File (and thus, os.Stderr and os.Stdout) implement WriteSyncer.
+//
+//
+//
 type WriteSyncer interface {
 	io.Writer
 	Sync() error
 }
 
-// AddSync converts an io.Writer to a WriteSyncer. It attempts to be
-// intelligent: if the concrete type of the io.Writer implements WriteSyncer,
+// AddSync converts an io.Writer to a WriteSyncer.
+// It attempts to be intelligent: if the concrete type of the io.Writer implements WriteSyncer,
 // we'll use the existing Sync method. If it doesn't, we'll add a no-op Sync.
+//
+//
+
 func AddSync(w io.Writer) WriteSyncer {
 	switch w := w.(type) {
+
 	case WriteSyncer:
 		return w
+
 	default:
 		return writerWrapper{w}
+
 	}
 }
 
@@ -51,8 +60,8 @@ type lockedWriteSyncer struct {
 	ws WriteSyncer
 }
 
-// Lock wraps a WriteSyncer in a mutex to make it safe for concurrent use. In
-// particular, *os.Files must be locked before use.
+// Lock wraps a WriteSyncer in a mutex to make it safe for concurrent use.
+// In particular, *os.Files must be locked before use.
 func Lock(ws WriteSyncer) WriteSyncer {
 	if _, ok := ws.(*lockedWriteSyncer); ok {
 		// no need to layer on another lock
@@ -85,8 +94,9 @@ func (w writerWrapper) Sync() error {
 
 type multiWriteSyncer []WriteSyncer
 
-// NewMultiWriteSyncer creates a WriteSyncer that duplicates its writes
-// and sync calls, much like io.MultiWriter.
+
+// NewMultiWriteSyncer creates a WriteSyncer that duplicates its writes and sync calls,
+// much like io.MultiWriter.
 func NewMultiWriteSyncer(ws ...WriteSyncer) WriteSyncer {
 	if len(ws) == 1 {
 		return ws[0]
@@ -95,10 +105,10 @@ func NewMultiWriteSyncer(ws ...WriteSyncer) WriteSyncer {
 	return multiWriteSyncer(append([]WriteSyncer(nil), ws...))
 }
 
+
 // See https://golang.org/src/io/multi.go
 // When not all underlying syncers write the same number of bytes,
-// the smallest number is returned even though Write() is called on
-// all of them.
+// the smallest number is returned even though Write() is called on all of them.
 func (ws multiWriteSyncer) Write(p []byte) (int, error) {
 	var writeErr error
 	nWritten := 0

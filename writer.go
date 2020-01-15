@@ -49,18 +49,24 @@ import (
 // os.Stdout and os.Stderr. When specified without a scheme, relative file
 // paths also work.
 func Open(paths ...string) (zapcore.WriteSyncer, func(), error) {
+
+	//
 	writers, close, err := open(paths)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	writer := CombineWriteSyncers(writers...)
+
 	return writer, close, nil
+
 }
 
 func open(paths []string) ([]zapcore.WriteSyncer, func(), error) {
+
 	writers := make([]zapcore.WriteSyncer, 0, len(paths))
 	closers := make([]io.Closer, 0, len(paths))
+
 	close := func() {
 		for _, c := range closers {
 			c.Close()
@@ -68,19 +74,27 @@ func open(paths []string) ([]zapcore.WriteSyncer, func(), error) {
 	}
 
 	var openErr error
+
+
 	for _, path := range paths {
+
 		sink, err := newSink(path)
 		if err != nil {
 			openErr = multierr.Append(openErr, fmt.Errorf("couldn't open sink %q: %v", path, err))
 			continue
 		}
+
 		writers = append(writers, sink)
 		closers = append(closers, sink)
+
 	}
+
+
 	if openErr != nil {
 		close()
 		return writers, nil, openErr
 	}
+
 
 	return writers, close, nil
 }
@@ -93,12 +107,10 @@ func open(paths []string) ([]zapcore.WriteSyncer, func(), error) {
 //using zapcore.NewMultiWriteSyncer and zapcore.Lock individually.
 
 
-// CombineWriteSyncers 是一个工具类，它将多个 WriteSyncers 组合成一个带锁的WriteSyncer。
+// CombineWriteSyncers 是一个工具类，它将多个 WriteSyncers 组合成一个带锁的 WriteSyncer 。
 // 如果没有提供输入，则返回 no-op WriteSyncer。
 //
-// 它纯粹是为了方便而提供的，结果与单独使用zapcore.NewMultiWriteSyncer和zapcore.Lock没有什么不同。
-
-
+// 它纯粹是为了方便而提供的，结果与单独使用 zapcore.NewMultiWriteSyncer 和 zapcore.Lock 没有什么不同。
 
 func CombineWriteSyncers(writers ...zapcore.WriteSyncer) zapcore.WriteSyncer {
 	if len(writers) == 0 {

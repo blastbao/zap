@@ -32,6 +32,10 @@ import (
 // to preserve a representative subset of your logs.
 //
 // Values configured here are per-second. See zapcore.NewSampler for details.
+//
+// Sampling 是对日志输出的保护功能，实现的效果是在 1s 的时间单位内，
+// 如果某个日志级别下同样内容的日志输出数量超过了 Initial 的数量，
+// 在超过之后，每隔 Thereafter 的数量，才会再输出一次。
 type SamplingConfig struct {
 	Initial    int `json:"initial" yaml:"initial"`
 	Thereafter int `json:"thereafter" yaml:"thereafter"`
@@ -50,7 +54,6 @@ type SamplingConfig struct {
 //
 // For an example showing runtime log level changes, see the documentation for
 // AtomicLevel.
-
 
 // Config 这个结构体每个字段都有 json 和 yaml 的标注，也就是说这些配置不仅仅可以在代码中赋值，
 // 也可以从配置文件中直接反序列化得到。
@@ -224,18 +227,23 @@ func (cfg Config) Build(opts ...Option) (*Logger, error) {
 		return nil, err
 	}
 
+
 	// 构造日志的输出对象，在 cfg.openSinks 的实现中，使用配置的输出路径 cfg.OutputPaths ，生成了两个 WriteSyncer 接口，用作 `日志输出` 和 `内部错误输出` 。
 	sink, errSink, err := cfg.openSinks()
 	if err != nil {
 		return nil, err
 	}
 
-	// 将 Core结构体 和 Option 作为参数调用 New 方法，这个方法会返回一个Logger。
+
+	// 将 Core 结构体 和 Option 作为参数调用 New 方法，这个方法会返回一个Logger。
 	log := New(
-		// 调用 NewCore 方法，传入上面构造出来的 encoder 和 sink 以及日志级别， 构造出日志的核心实现 `Core结构体`
+
+		// 调用 NewCore 方法创建一个 ioCore 结构体，该结构体实现了 Core 接口
 		zapcore.NewCore(enc, sink, cfg.Level),
+
 		// 调用 buildOptions 方法，将 Config 结构体转化成了 Option 接口数组
 		cfg.buildOptions(errSink)...,
+
 	)
 
 	// 如果调用 Build 时还带有其他的 Option 参数，就调用 WithOptions 方法使这些Option生效
@@ -318,15 +326,20 @@ func (cfg Config) buildOptions(errSink zapcore.WriteSyncer) []Option {
 }
 
 func (cfg Config) openSinks() (zapcore.WriteSyncer, zapcore.WriteSyncer, error) {
+
+	// 调用 Open 方法，打开日志输出路径，返回 sink
 	sink, closeOut, err := Open(cfg.OutputPaths...)
 	if err != nil {
 		return nil, nil, err
 	}
+
+	// 调用 Open 方法，打开错误输出路径，返回 errSink
 	errSink, _, err := Open(cfg.ErrorOutputPaths...)
 	if err != nil {
 		closeOut()
 		return nil, nil, err
 	}
+
 	return sink, errSink, nil
 }
 

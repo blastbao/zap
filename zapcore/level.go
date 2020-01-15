@@ -160,16 +160,18 @@ func (l Level) Enabled(lvl Level) bool {
 	return lvl >= l
 }
 
-// LevelEnabler decides whether a given logging level is enabled when logging a
-// message.
+// LevelEnabler decides whether a given logging level is enabled when logging a message.
 //
 // Enablers are intended to be used to implement deterministic filters;
 // concerns like sampling are better implemented as a Core.
 //
-// Each concrete Level value implements a static LevelEnabler which returns
-// true for itself and all higher logging levels. For example WarnLevel.Enabled()
-// will return true for WarnLevel, ErrorLevel, DPanicLevel, PanicLevel, and
-// FatalLevel, but return false for InfoLevel and DebugLevel.
+// Each concrete Level value implements a static LevelEnabler which returns true for itself
+// and all higher logging levels.
+//
+// For example WarnLevel.Enabled() will return true for WarnLevel, ErrorLevel, DPanicLevel, PanicLevel,
+// and FatalLevel, but return false for InfoLevel and DebugLevel.
+//
+// LevelEnabler 根据日志级别判断日志是否应该输出
 type LevelEnabler interface {
 	Enabled(Level) bool
 }

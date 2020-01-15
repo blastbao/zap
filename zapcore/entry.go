@@ -249,16 +249,14 @@ func (ce *CheckedEntry) Write(fields ...Field) {
 		}
 	}
 
-	
 	// 获取 ce.should 和 ce.Message 字段
 	should, msg := ce.should, ce.Message
 
-
-	// 将 ce 放回对象池中，以备下次使用
+	// 至此，ce 使用完毕， 将其放回对象池中，以备下次使用
 	putCheckedEntry(ce)
 
-
-	// 判断了 should 的值，默认为 WriteThenNoop ，即写完不做任何操作，但对于 Panic 和 Fatal 级别的日志，分别需要 `调用 panic 方法` 或者 `进程直接无条件退出`。
+	// 判断了 should 的值，默认为 WriteThenNoop ，即写完不做任何操作；
+	// 但对于 Panic 和 Fatal 级别的日志，分别需要 `调用 panic 方法` 或者 `进程直接无条件退出`。
 	switch should {
 	case WriteThenPanic:
 		panic(msg)
