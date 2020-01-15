@@ -45,7 +45,7 @@ import (
 
 type Logger struct {
 
-	// 默认 ioCore
+	// core 是 Logger 的核心成员， 默认为 ioCore，
 	core zapcore.Core
 
 	// 开发者模式
@@ -227,19 +227,12 @@ func (log *Logger) Debug(msg string, fields ...Field) {
 // The message includes any fields passed at the log site,
 // as well as any fields accumulated on the logger.
 func (log *Logger) Info(msg string, fields ...Field) {
-
-
-
-
+	// log.check() 检查 InfoLevel 级别日志是否应该输出，如果应该则会返回 CheckedEntry 结构体 ce，ce 中包含了需要输出到文件的信息。
 	if ce := log.check(InfoLevel, msg); ce != nil {
+		// 遍历 ce.cores 逐个调用 ce.cores[i].Write(ce.Entry, fields...) 函数，以将 Entry 和 fields 写入多个目标文件中。
 		ce.Write(fields...)
 	}
 }
-
-
-
-
-
 
 // Warn logs a message at WarnLevel. The message includes any fields passed
 // at the log site, as well as any fields accumulated on the logger.
@@ -282,8 +275,7 @@ func (log *Logger) Panic(msg string, fields ...Field) {
 // Fatal logs a message at FatalLevel. The message includes any fields passed
 // at the log site, as well as any fields accumulated on the logger.
 //
-// The logger then calls os.Exit(1), even if logging at FatalLevel is
-// disabled.
+// The logger then calls os.Exit(1), even if logging at FatalLevel is disabled.
 func (log *Logger) Fatal(msg string, fields ...Field) {
 	if ce := log.check(FatalLevel, msg); ce != nil {
 		ce.Write(fields...)
@@ -306,14 +298,12 @@ func (log *Logger) clone() *Logger {
 	return &copy
 }
 
-
-
-
-
-
+// 1. 创建 Entry 结构体并存储当前已确定的部分信息。
+// 2. 调用 log.core.Check() 检查 lvl 级别的日志是否应该输出，若应该输出，就获取一个可用 CheckedEntry 的结构体 ce，并把 log.core 添加 ce.cores 中，并把 ent 赋值给 ce.Entry 。
+// 3. 如果 ce != nil 则需要执行写操作，设置 willWrite 变量为 true ，否则直接返回 nil 。
+// 4. 填充 ce.ErrorOutput、ce.Entry.Caller、ce.Entry.Stack 等信息。
+// 5. 返回 ce 。
 func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
-
-
 
 	// check must always be called directly by a method in the Logger interface (e.g., Check, Info, Fatal).
 	const callerSkipOffset = 2
@@ -321,7 +311,7 @@ func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 	// Create basic checked entry thru the core;
 	// this will be non-nil if the log message will actually be written somewhere.
 	//
-	// 创建 Entry 并存储当前已确定的部分信息
+	// 1. 创建 Entry 并存储当前已确定的部分信息，比如 logger name、timestamp、level、msg 字段。
 	ent := zapcore.Entry{
 		LoggerName: log.name,		// logger name
 		Time:       time.Now(), 	// 时间
@@ -329,17 +319,11 @@ func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 		Message:    msg, 			// 内容
 	}
 
-
-
-
-	// ???????
+	// 2. （重要）创建 CheckedEntry 结构体 ce 并把 log.core 添加 ce.cores 中，这些 ce.cores 会在 ce.Write() 中被逐个调用。
 	ce := log.core.Check(ent, nil)
 
-
-
-	// 如果 ce 为 nil 则不会发生写行为
+	// 3. 如果 ce 为 nil 则不会发生写行为
 	willWrite := ce != nil
-
 
 	// Set up any required terminal behavior.
 	//
@@ -356,7 +340,6 @@ func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 		}
 	}
 
-
 	// Only do further annotation if we're going to write this message;
 	// checked entries that exist only for terminal behavior don't benefit from annotation.
 	//
@@ -365,12 +348,17 @@ func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 		return ce
 	}
 
+
+	// 4. 填充 ce 和 ce.Entry 中一些关键字段。
+
 	// Thread the error output through to the CheckedEntry.
 	ce.ErrorOutput = log.errorOutput
 
 	// 判断是否需要打印文件名、行号，如果需要，调用 runtime.Caller(）获取并附加进entry里。
 	if log.addCaller {
+		// 保存调用者信息到 ce.Entry.Caller 中
 		ce.Entry.Caller = zapcore.NewEntryCaller(runtime.Caller(log.callerSkip + callerSkipOffset))
+
 		// 如果调用 runtime.Caller(）失败，则输出错误信息到 log.errorOutput 中，并实时的 sync 刷盘。
 		if !ce.Entry.Caller.Defined {
 			fmt.Fprintf(log.errorOutput, "%v Logger.check error: failed to get caller\n", time.Now().UTC())
@@ -378,7 +366,7 @@ func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 		}
 	}
 
-	// 判断是否需要打印调用栈，如果需要，调用 runtime.CallersFrames(）获取并附加到 entry 里。
+	// 判断是否需要打印调用栈，如果需要，调用 runtime.CallersFrames(）获取并附加到 ce.Entry.Stack 里。
 	if log.addStack.Enabled(ce.Entry.Level) {
 		ce.Entry.Stack = Stack("").String
 	}

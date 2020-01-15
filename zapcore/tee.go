@@ -22,9 +22,10 @@ package zapcore
 
 import "go.uber.org/multierr"
 
+
+
+// multiCore 实现了 Core 接口，它可以在任何位置替换 Core
 type multiCore []Core
-
-
 
 
 // NewTee creates a Core that duplicates log entries into two or more underlying Cores.
@@ -49,7 +50,6 @@ func NewTee(cores ...Core) Core {
 		return multiCore(cores)
 	}
 }
-
 
 func (mc multiCore) With(fields []Field) Core {
 	clone := make(multiCore, len(mc))

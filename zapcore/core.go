@@ -20,8 +20,10 @@
 
 package zapcore
 
-// Core is a minimal, fast logger interface. It's designed for library authors
-// to wrap in a more user-friendly API.
+// Core is a minimal, fast logger interface.
+// It's designed for library authors to wrap in a more user-friendly API.
+//
+//
 type Core interface {
 
 	// LevelEnabler 根据日志级别判断日志是否应该输出
@@ -37,7 +39,6 @@ type Core interface {
 	//
 	// Callers must use Check before calling Write.
 	Check(Entry, *CheckedEntry) *CheckedEntry
-
 
 	// Write serializes the Entry and any Fields supplied at the log site and
 	// writes them to their destination.
@@ -75,9 +76,9 @@ func NewCore(enc Encoder, ws WriteSyncer, enab LevelEnabler) Core {
 }
 
 type ioCore struct {
-	LevelEnabler 		// 根据日志级别判断日志是否应该输出
-	enc Encoder			// 日志编码器
-	out WriteSyncer 	// 日志输出器
+	LevelEnabler 		// 根据日志级别 level 判断当前日志是否应该输出
+	enc Encoder			// 编码器，能够将 Entry 和 fields 编码成 bytes
+	out WriteSyncer 	// 输出器，能够将 bytes 写入到目标文件中，返回写入成功数
 }
 
 func (c *ioCore) With(fields []Field) Core {

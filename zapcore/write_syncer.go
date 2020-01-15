@@ -42,7 +42,8 @@ type WriteSyncer interface {
 // we'll use the existing Sync method. If it doesn't, we'll add a no-op Sync.
 //
 //
-
+//
+//
 func AddSync(w io.Writer) WriteSyncer {
 	switch w := w.(type) {
 
@@ -51,7 +52,6 @@ func AddSync(w io.Writer) WriteSyncer {
 
 	default:
 		return writerWrapper{w}
-
 	}
 }
 

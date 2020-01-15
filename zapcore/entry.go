@@ -204,14 +204,17 @@ func (ce *CheckedEntry) reset() {
 // Write writes the entry to the stored Cores, returns any errors,
 // and returns the CheckedEntry reference to a pool for immediate re-use.
 // Finally, it executes any required CheckWriteAction.
+//
+//
+//
 func (ce *CheckedEntry) Write(fields ...Field) {
 
-	// 参数检查
+	// 1. 参数检查
 	if ce == nil {
 		return
 	}
 
-	// 脏数据检查
+	// 2. 脏数据检查
 	//
 	// 正常情况下，通过 getCheckedEntry() 获取 CheckedEntry 时，一定调用过 reset 方法，ce.dirty 不应该为 true 。
 	// 这里如果是 true ，说明 zap 内部发生了一些错误，或者是 zap 自身的 bug ，此时不可以输出正常日志的，需要写系统错误日志记录这一异常。
@@ -252,7 +255,7 @@ func (ce *CheckedEntry) Write(fields ...Field) {
 	// 获取 ce.should 和 ce.Message 字段
 	should, msg := ce.should, ce.Message
 
-	// 至此，ce 使用完毕， 将其放回对象池中，以备下次使用
+	// 至此，ce 使用完毕，将其放回对象池中，以备下次使用
 	putCheckedEntry(ce)
 
 	// 判断了 should 的值，默认为 WriteThenNoop ，即写完不做任何操作；

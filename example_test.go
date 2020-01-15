@@ -27,7 +27,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/blastbao"
+	"github.com/blastbao/zap"
 	"github.com/blastbao/zap/zapcore"
 )
 
@@ -113,12 +113,14 @@ func Example_advancedConfiguration() {
 	// high-priority logs.
 
 	// First, define our level-handling logic.
-	highPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+	highPriority := zap.LevelEnablerFunc( func(lvl zapcore.Level) bool {
 		return lvl >= zapcore.ErrorLevel
 	})
+
 	lowPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 		return lvl < zapcore.ErrorLevel
 	})
+
 
 	// Assume that we have clients for two Kafka topics. The clients implement
 	// zapcore.WriteSyncer and are safe for concurrent use. (If they only
@@ -133,13 +135,15 @@ func Example_advancedConfiguration() {
 	consoleDebugging := zapcore.Lock(os.Stdout)
 	consoleErrors := zapcore.Lock(os.Stderr)
 
+
 	// Optimize the Kafka output for machine consumption and the console output
 	// for human operators.
 	kafkaEncoder := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
 	consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
 
-	// Join the outputs, encoders, and level-handling functions into
-	// zapcore.Cores, then tee the four cores together.
+
+	// Join the outputs, encoders, and level-handling functions into zapcore.Cores,
+	// then tee the four cores together.
 	core := zapcore.NewTee(
 		zapcore.NewCore(kafkaEncoder, topicErrors, highPriority),
 		zapcore.NewCore(consoleEncoder, consoleErrors, highPriority),
@@ -150,6 +154,7 @@ func Example_advancedConfiguration() {
 	// From a zapcore.Core, it's easy to construct a Logger.
 	logger := zap.New(core)
 	defer logger.Sync()
+
 	logger.Info("constructed a logger")
 }
 

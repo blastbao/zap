@@ -50,7 +50,7 @@ func WrapCore(f func(zapcore.Core) zapcore.Core) Option {
 // a zapcore.Core instead. See zapcore.RegisterHooks for details.
 //
 //
-// 注册回调函数。
+// 注册回调函数，当 write 操作完成时会逐个调用。
 func Hooks(hooks ...func(zapcore.Entry) error) Option {
 	return optionFunc(func(log *Logger) {
 		log.core = zapcore.RegisterHooks(log.core, hooks...)
@@ -74,7 +74,7 @@ func Fields(fs ...Field) Option {
 // zapcore.Lock functions are the simplest ways to protect files with a mutex.
 //
 //
-// ErrorOutput 用来指定日志组件中出现异常时的输出
+// ErrorOutput 用来指定日志组件中出现异常时的输出目的地。
 func ErrorOutput(w zapcore.WriteSyncer) Option {
 	return optionFunc(func(log *Logger) {
 		log.errorOutput = w
