@@ -41,9 +41,14 @@ var (
 	}}
 )
 
+
+// 从对象池中获取可用的 CheckedEntry 的结构指针对象
 func getCheckedEntry() *CheckedEntry {
+	// 从 _cePool 中获取一个可用的 CheckedEntry 的结构指针对象
 	ce := _cePool.Get().(*CheckedEntry)
+	// 由于对象池中的对象会复用，调用 reset 清除脏数据
 	ce.reset()
+
 	return ce
 }
 
@@ -149,13 +154,14 @@ type Entry struct {
 	Stack      string
 }
 
-// CheckWriteAction indicates what action to take after a log entry is
-// processed. Actions are ordered in increasing severity.
+// CheckWriteAction indicates what action to take after a log entry is processed.
+// Actions are ordered in increasing severity.
 type CheckWriteAction uint8
 
+
 const (
-	// WriteThenNoop indicates that nothing special needs to be done. It's the
-	// default behavior.
+	// WriteThenNoop indicates that nothing special needs to be done.
+	// It's the default behavior.
 	WriteThenNoop CheckWriteAction = iota
 	// WriteThenPanic causes a panic after Write.
 	WriteThenPanic
@@ -163,12 +169,12 @@ const (
 	WriteThenFatal
 )
 
-// CheckedEntry is an Entry together with a collection of Cores that have
-// already agreed to log it.
+
+
+// CheckedEntry is an Entry together with a collection of Cores that have already agreed to log it.
 //
-// CheckedEntry references should be created by calling AddCore or Should on a
-// nil *CheckedEntry. References are returned to a pool after Write, and MUST
-// NOT be retained after calling their Write method.
+// CheckedEntry references should be created by calling AddCore or Should on a nil *CheckedEntry.
+// References are returned to a pool after Write, and MUST NOT be retained after calling their Write method.
 type CheckedEntry struct {
 	Entry
 	ErrorOutput WriteSyncer
@@ -177,11 +183,17 @@ type CheckedEntry struct {
 	cores       []Core
 }
 
+
 func (ce *CheckedEntry) reset() {
+	// 重置 ce.Entry
 	ce.Entry = Entry{}
+	// 重置 ce.ErrorOutput
 	ce.ErrorOutput = nil
+	// dirty 是用来标识该 CheckedEntry 是不是一个脏数据，置为 false
 	ce.dirty = false
+	//
 	ce.should = WriteThenNoop
+	// 一个 CheckedEntry 上可能绑定多个不同的 cores ，这里把所有的 cores 都置空，并使切片长度归零。
 	for i := range ce.cores {
 		// don't keep references to cores
 		ce.cores[i] = nil
@@ -189,15 +201,22 @@ func (ce *CheckedEntry) reset() {
 	ce.cores = ce.cores[:0]
 }
 
-// Write writes the entry to the stored Cores, returns any errors, and returns
-// the CheckedEntry reference to a pool for immediate re-use. Finally, it
-// executes any required CheckWriteAction.
+// Write writes the entry to the stored Cores, returns any errors,
+// and returns the CheckedEntry reference to a pool for immediate re-use.
+// Finally, it executes any required CheckWriteAction.
 func (ce *CheckedEntry) Write(fields ...Field) {
+
+	// 参数检查
 	if ce == nil {
 		return
 	}
 
+	// 脏数据检查
+	//
+	// 正常情况下，通过 getCheckedEntry() 获取 CheckedEntry 时，一定调用过 reset 方法，ce.dirty 不应该为 true 。
+	// 这里如果是 true ，说明 zap 内部发生了一些错误，或者是 zap 自身的 bug ，此时不可以输出正常日志的，需要写系统错误日志记录这一异常。
 	if ce.dirty {
+		// 写系统错误日志
 		if ce.ErrorOutput != nil {
 			// Make a best effort to detect unsafe re-use of this CheckedEntry.
 			// If the entry is dirty, log an internal error; because the
@@ -208,12 +227,21 @@ func (ce *CheckedEntry) Write(fields ...Field) {
 		}
 		return
 	}
+
+	// 因为当前 CheckedEntry 正在处理，为避免被错误重用，需要置 ce.dirty 为 true。
+	//
+	// 这里多啰嗦一点，如果严格使用对象池，这个 dirty 字段一般没有用处，除非 zap 库 `使用者` 或者 `二次开发者` 把 CheckedEntry 自行持有并多次使用，才有可能发生这种冲突。
 	ce.dirty = true
 
+	// 遍历 ce.cores ，逐个调用 ce.cores[i].Write() 函数，以将 ce.Entry 和 fields 写入目标地址，并汇总错误信息到 err 中。
+	//
+	// 这里用到 uber 自研的 multierr 包，可以将多个 error 拼接成一个，对于循环调用某些方法，最终判断有没有发生过错误的场景很实用。
 	var err error
 	for i := range ce.cores {
 		err = multierr.Append(err, ce.cores[i].Write(ce.Entry, fields))
 	}
+
+	// 如果 err 不为 nil ，则把汇总后的错误信息写到错误输出中
 	if ce.ErrorOutput != nil {
 		if err != nil {
 			fmt.Fprintf(ce.ErrorOutput, "%v write error: %v\n", time.Now(), err)
@@ -221,26 +249,41 @@ func (ce *CheckedEntry) Write(fields ...Field) {
 		}
 	}
 
+	
+	// 获取 ce.should 和 ce.Message 字段
 	should, msg := ce.should, ce.Message
+
+
+	// 将 ce 放回对象池中，以备下次使用
 	putCheckedEntry(ce)
 
+
+	// 判断了 should 的值，默认为 WriteThenNoop ，即写完不做任何操作，但对于 Panic 和 Fatal 级别的日志，分别需要 `调用 panic 方法` 或者 `进程直接无条件退出`。
 	switch should {
 	case WriteThenPanic:
 		panic(msg)
 	case WriteThenFatal:
 		exit.Exit()
 	}
+
 }
 
 // AddCore adds a Core that has agreed to log this CheckedEntry. It's intended to be
 // used by Core.Check implementations, and is safe to call on nil CheckedEntry
 // references.
 func (ce *CheckedEntry) AddCore(ent Entry, core Core) *CheckedEntry {
+
+	// 先判断了 reciever 是否为空，如果是空，就通过 getCheckedEntry() 获取一个可用 CheckedEntry 的结构体指针。
 	if ce == nil {
+		// 从 _cePool 中获取一个 CheckedEntry 的结构指针，这里使用对象池以减少 GC 压力。
 		ce = getCheckedEntry()
+		// 重新设置 entry
 		ce.Entry = ent
 	}
+
+	// 添加新的 core
 	ce.cores = append(ce.cores, core)
+
 	return ce
 }
 

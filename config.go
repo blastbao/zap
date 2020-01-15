@@ -109,7 +109,7 @@ type Config struct {
 	// OutputPaths is a list of URLs or file paths to write logging output to.
 	// See Open for details.
 	//
-	// 用来指定日志的输出路径，不过这个路径不仅仅支持文件路径和标准输出，还支持其他的自定义协议，
+	// 用来指定日志的输出路径，不过这个路径不仅仅支持文件路径和标准输出 stdout ，还支持其他的自定义协议，
 	// 当然如果要使用自定义协议，也需要使用 RegisterSink 方法先注册一个该协议对应的工厂方法，该工厂方法实现了 Sink 接口。
 	OutputPaths []string `json:"outputPaths" yaml:"outputPaths"`
 
@@ -121,13 +121,14 @@ type Config struct {
 	// sends error-level logs to a different location from info- and debug-level
 	// logs, see the package-level AdvancedConfiguration example.
 	//
-	//
-	// 与 OutputPaths 类似，不过用来指定的是错误日志的输出，不过要注意，
-	// 这个错误日志不是业务的错误（ERROR）日志，而是 zap 中出现的内部错误，将会被定向到这个路径下。
+	// 与 OutputPaths 类似，不过指定的是系统内错误日志的输出地址，不是业务的错误（ERROR）日志。
 	ErrorOutputPaths []string `json:"errorOutputPaths" yaml:"errorOutputPaths"`
 
 
 	// InitialFields is a collection of fields to add to the root logger.
+	//
+	//
+	// 加入一些初始的字段数据，比如项目名
 	//
 	// 理解这个参数需要结合 zap 的结构化日志输出的机制来理解，后面会详细解释，这里只要知道有这个配置时，日志输出内容中会包含这个 map 。
 	InitialFields map[string]interface{} `json:"initialFields" yaml:"initialFields"`
@@ -213,67 +214,103 @@ func NewDevelopmentConfig() Config {
 	}
 }
 
+
 // Build constructs a logger from the Config and Options.
 func (cfg Config) Build(opts ...Option) (*Logger, error) {
 
+	// 构造日志的编码器，cfg.buildEncoder() 实现中会用到 cfg.Encoding, cfg.EncoderConfig 这两个配置。
 	enc, err := cfg.buildEncoder()
 	if err != nil {
 		return nil, err
 	}
 
+	// 构造日志的输出对象，在 cfg.openSinks 的实现中，使用配置的输出路径 cfg.OutputPaths ，生成了两个 WriteSyncer 接口，用作 `日志输出` 和 `内部错误输出` 。
 	sink, errSink, err := cfg.openSinks()
 	if err != nil {
 		return nil, err
 	}
 
+	// 将 Core结构体 和 Option 作为参数调用 New 方法，这个方法会返回一个Logger。
 	log := New(
+		// 调用 NewCore 方法，传入上面构造出来的 encoder 和 sink 以及日志级别， 构造出日志的核心实现 `Core结构体`
 		zapcore.NewCore(enc, sink, cfg.Level),
+		// 调用 buildOptions 方法，将 Config 结构体转化成了 Option 接口数组
 		cfg.buildOptions(errSink)...,
 	)
 
+	// 如果调用 Build 时还带有其他的 Option 参数，就调用 WithOptions 方法使这些Option生效
 	if len(opts) > 0 {
 		log = log.WithOptions(opts...)
 	}
 
+	// 返回 Logger
 	return log, nil
 }
 
-func (cfg Config) buildOptions(errSink zapcore.WriteSyncer) []Option {
-	opts := []Option{ErrorOutput(errSink)}
 
+
+//
+func (cfg Config) buildOptions(errSink zapcore.WriteSyncer) []Option {
+
+
+	opts := []Option{
+		ErrorOutput(errSink),
+	}
+
+	// 开发者模式
 	if cfg.Development {
 		opts = append(opts, Development())
 	}
 
+	// 增加行号和文件名
 	if !cfg.DisableCaller {
 		opts = append(opts, AddCaller())
 	}
 
+	// 日志级别
 	stackLevel := ErrorLevel
 	if cfg.Development {
 		stackLevel = WarnLevel
 	}
 
+	// 输出堆栈
 	if !cfg.DisableStacktrace {
-		opts = append(opts, AddStacktrace(stackLevel))
+		opts = append(opts, AddStacktrace(stackLevel)) // AddStacktrace(level) 用来对指定的日志等级增加调用栈输出能力。
 	}
 
+	// 采样功能
 	if cfg.Sampling != nil {
-		opts = append(opts, WrapCore(func(core zapcore.Core) zapcore.Core {
-			return zapcore.NewSampler(core, time.Second, int(cfg.Sampling.Initial), int(cfg.Sampling.Thereafter))
-		}))
+		opts = append(opts,
+			WrapCore(
+				//
+				func(core zapcore.Core) zapcore.Core {
+					return zapcore.NewSampler(core, time.Second, int(cfg.Sampling.Initial), int(cfg.Sampling.Thereafter))
+				},
+			),
+		)
 	}
 
+
+	// 初始字段
 	if len(cfg.InitialFields) > 0 {
+
 		fs := make([]Field, 0, len(cfg.InitialFields))
 		keys := make([]string, 0, len(cfg.InitialFields))
+
+		// 提取 keys
 		for k := range cfg.InitialFields {
 			keys = append(keys, k)
 		}
+
+		// 排序 keys
 		sort.Strings(keys)
+
+		// 按序填充 key, value
 		for _, k := range keys {
 			fs = append(fs, Any(k, cfg.InitialFields[k]))
 		}
+
+		// 调用 Fields 创建 `为日志增加待打印的字段` 的 options，添加到 opts 中。
 		opts = append(opts, Fields(fs...))
 	}
 

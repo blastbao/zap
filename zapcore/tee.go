@@ -24,11 +24,22 @@ import "go.uber.org/multierr"
 
 type multiCore []Core
 
-// NewTee creates a Core that duplicates log entries into two or more
-// underlying Cores.
+
+
+
+// NewTee creates a Core that duplicates log entries into two or more underlying Cores.
 //
-// Calling it with a single Core returns the input unchanged, and calling
-// it with no input returns a no-op Core.
+// Calling it with a single Core returns the input unchanged, and calling it with no input returns a no-op Core.
+//
+//
+//
+// multiCore 存在的意义在于，一个 logger 上可以绑定多种不同的输出策略，
+// 如不同级别的日志写入不同的文件，或者一些日志写本地文件，一部分日志写入远程的 kafka 等等。
+// 这些不同的策略需要不同的 Core 来对编码方式、文件路径、级别控制等等做区分。
+// 这个时候就需要用到 multiCore 了，multiCore 类型的定义实际是一个 Core 的切片。
+//
+// 在 multiCore 的实现中，几乎所有的成员方法都会所包含的 Cores 遍历一遍。
+
 func NewTee(cores ...Core) Core {
 	switch len(cores) {
 	case 0:
@@ -39,6 +50,7 @@ func NewTee(cores ...Core) Core {
 		return multiCore(cores)
 	}
 }
+
 
 func (mc multiCore) With(fields []Field) Core {
 	clone := make(multiCore, len(mc))
@@ -57,6 +69,8 @@ func (mc multiCore) Enabled(lvl Level) bool {
 	return false
 }
 
+// Check 方法中会分别调用封装的 Cores 中的 Check 方法。
+// 以 ioCore 为例，其 Check 方法会先通过 Enabled 方法检查是否应该输出，若应该便会把自己保存到 ce.cores 中 。
 func (mc multiCore) Check(ent Entry, ce *CheckedEntry) *CheckedEntry {
 	for i := range mc {
 		ce = mc[i].Check(ent, ce)

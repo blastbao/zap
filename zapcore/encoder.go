@@ -230,25 +230,39 @@ type EncoderConfig struct {
 	// Set the keys used for each log entry.
 	// If any key is empty, that portion of the entry is omitted.
 
+	// 输入信息的 key
 	MessageKey    string `json:"messageKey" yaml:"messageKey"`
+	// 输出日志级别的 key
 	LevelKey      string `json:"levelKey" yaml:"levelKey"`
+	// 输出时间的 key
 	TimeKey       string `json:"timeKey" yaml:"timeKey"`
 	NameKey       string `json:"nameKey" yaml:"nameKey"`
 	CallerKey     string `json:"callerKey" yaml:"callerKey"`
 	StacktraceKey string `json:"stacktraceKey" yaml:"stacktraceKey"`
+
+	// 每行的分隔符
 	LineEnding    string `json:"lineEnding" yaml:"lineEnding"`
 
 	// Configure the primitive representations of common complex types.
 	// For example, some users may want all time.Times serialized as floating-point seconds since epoch,
 	// while others may prefer ISO8601 strings.
 
+	// 一般 zapcore.LowercaseLevelEncoder，将日志级别字符串转化为小写
 	EncodeLevel    LevelEncoder    `json:"levelEncoder" yaml:"levelEncoder"`
+
+	// 输出的时间格式
 	EncodeTime     TimeEncoder     `json:"timeEncoder" yaml:"timeEncoder"`
+
+	// 一般 zapcore.SecondsDurationEncoder，执行消耗的时间转化成浮点型的秒
 	EncodeDuration DurationEncoder `json:"durationEncoder" yaml:"durationEncoder"`
+
+	// 一般 zapcore.ShortCallerEncoder，以 `包/文件:行号` 来格式化调用堆栈
 	EncodeCaller   CallerEncoder   `json:"callerEncoder" yaml:"callerEncoder"`
 
 	// Unlike the other primitive type encoders, EncodeName is optional.
 	// The zero value falls back to FullNameEncoder.
+	//
+	// 可选值。
 	EncodeName NameEncoder `json:"nameEncoder" yaml:"nameEncoder"`
 }
 

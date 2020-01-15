@@ -23,10 +23,13 @@ package zapcore
 // Core is a minimal, fast logger interface. It's designed for library authors
 // to wrap in a more user-friendly API.
 type Core interface {
+
 	LevelEnabler
 
 	// With adds structured context to the Core.
 	With([]Field) Core
+
+
 	// Check determines whether the supplied Entry should be logged (using the
 	// embedded LevelEnabler and possibly some extra logic). If the entry
 	// should be logged, the Core adds itself to the CheckedEntry and returns
@@ -34,14 +37,20 @@ type Core interface {
 	//
 	// Callers must use Check before calling Write.
 	Check(Entry, *CheckedEntry) *CheckedEntry
+
+
 	// Write serializes the Entry and any Fields supplied at the log site and
 	// writes them to their destination.
 	//
 	// If called, Write should always log the Entry and Fields; it should not
 	// replicate the logic of Check.
 	Write(Entry, []Field) error
+
+
 	// Sync flushes buffered logs (if any).
 	Sync() error
+
+
 }
 
 type nopCore struct{}
@@ -76,27 +85,42 @@ func (c *ioCore) With(fields []Field) Core {
 }
 
 func (c *ioCore) Check(ent Entry, ce *CheckedEntry) *CheckedEntry {
+
+	// 调用 c.Enabled 方法检查 level 级别日志是否应该输出。
 	if c.Enabled(ent.Level) {
+
+		// 若应该输出，就把 c 添加 ce.cores 中。
+
+		// 注意，ce 可能是 nil，顺便提一下，go 语言中对于 receiver 是指针类型的方法，当实际调用时，
+		// 即使 receiver 是 nil 也不会产生空指针的 panic ，只有访问到 receiver 的成员变量时，才会 panic 。
 		return ce.AddCore(ent, c)
 	}
+
 	return ce
 }
 
 func (c *ioCore) Write(ent Entry, fields []Field) error {
+
+
 	buf, err := c.enc.EncodeEntry(ent, fields)
 	if err != nil {
 		return err
 	}
+
+
 	_, err = c.out.Write(buf.Bytes())
 	buf.Free()
+
 	if err != nil {
 		return err
 	}
+
 	if ent.Level > ErrorLevel {
 		// Since we may be crashing the program, sync the output. Ignore Sync
 		// errors, pending a clean solution to issue #370.
 		c.Sync()
 	}
+
 	return nil
 }
 

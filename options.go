@@ -48,6 +48,9 @@ func WrapCore(f func(zapcore.Core) zapcore.Core) Option {
 // number of emitted logs. More complex side effects, including anything that
 // requires access to the Entry's structured fields, should be implemented as
 // a zapcore.Core instead. See zapcore.RegisterHooks for details.
+//
+//
+// 注册回调函数。
 func Hooks(hooks ...func(zapcore.Entry) error) Option {
 	return optionFunc(func(log *Logger) {
 		log.core = zapcore.RegisterHooks(log.core, hooks...)
@@ -55,6 +58,7 @@ func Hooks(hooks ...func(zapcore.Entry) error) Option {
 }
 
 // Fields adds fields to the Logger.
+// Fields 为日志打印增加待打印的字段。
 func Fields(fs ...Field) Option {
 	return optionFunc(func(log *Logger) {
 		log.core = log.core.With(fs)
@@ -68,6 +72,9 @@ func Fields(fs ...Field) Option {
 //
 // The supplied WriteSyncer must be safe for concurrent use. The Open and
 // zapcore.Lock functions are the simplest ways to protect files with a mutex.
+//
+//
+// ErrorOutput 用来指定日志组件中出现异常时的输出
 func ErrorOutput(w zapcore.WriteSyncer) Option {
 	return optionFunc(func(log *Logger) {
 		log.errorOutput = w
@@ -76,6 +83,8 @@ func ErrorOutput(w zapcore.WriteSyncer) Option {
 
 // Development puts the logger in development mode, which makes DPanic-level
 // logs panic instead of simply logging an error.
+//
+// Development 可以将 Logger 修改为 Development 模式。
 func Development() Option {
 	return optionFunc(func(log *Logger) {
 		log.development = true
@@ -84,6 +93,8 @@ func Development() Option {
 
 // AddCaller configures the Logger to annotate each message with the filename
 // and line number of zap's caller.
+//
+// AddCaller 可以在日志输出内容里增加行号和文件名
 func AddCaller() Option {
 	return optionFunc(func(log *Logger) {
 		log.addCaller = true
@@ -94,6 +105,8 @@ func AddCaller() Option {
 // (as enabled by the AddCaller option). When building wrappers around the
 // Logger and SugaredLogger, supplying this Option prevents zap from always
 // reporting the wrapper code as the caller.
+//
+// AddCallerSkip 可以指定在调用栈中跳过的调用深度，否则通过调用栈获得的行号可能总是日志组件中的行号。
 func AddCallerSkip(skip int) Option {
 	return optionFunc(func(log *Logger) {
 		log.callerSkip += skip
@@ -102,6 +115,8 @@ func AddCallerSkip(skip int) Option {
 
 // AddStacktrace configures the Logger to record a stack trace for all messages at
 // or above a given level.
+//
+// AddStacktrace 用来对指定的日志等级增加调用栈输出能力。
 func AddStacktrace(lvl zapcore.LevelEnabler) Option {
 	return optionFunc(func(log *Logger) {
 		log.addStack = lvl

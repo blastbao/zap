@@ -45,15 +45,24 @@ import (
 
 type Logger struct {
 
+	//
 	core zapcore.Core
 
+	// 开发者模式
 	development bool
+
 	name        string
+
+	// 日志组件中出现异常时的输出
 	errorOutput zapcore.WriteSyncer
 
+	// 在日志输出内容里增加行号和文件名
 	addCaller bool
+
+	// 对指定的日志等级增加调用栈输出能力
 	addStack  zapcore.LevelEnabler
 
+	// 指定在调用栈中跳过的调用深度
 	callerSkip int
 }
 
@@ -291,23 +300,45 @@ func (log *Logger) clone() *Logger {
 	return &copy
 }
 
+
+
+
+
+
 func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
-	// check must always be called directly by a method in the Logger interface
-	// (e.g., Check, Info, Fatal).
+
+
+
+	// check must always be called directly by a method in the Logger interface (e.g., Check, Info, Fatal).
 	const callerSkipOffset = 2
 
-	// Create basic checked entry thru the core; this will be non-nil if the
-	// log message will actually be written somewhere.
+	// Create basic checked entry thru the core;
+	// this will be non-nil if the log message will actually be written somewhere.
+	//
+	// 创建 Entry 并存储当前已确定的部分信息
 	ent := zapcore.Entry{
-		LoggerName: log.name,
-		Time:       time.Now(),
-		Level:      lvl,
-		Message:    msg,
+		LoggerName: log.name,		// logger name
+		Time:       time.Now(), 	// 时间
+		Level:      lvl,			// 级别
+		Message:    msg, 			// 内容
 	}
+
+
+
+
+	// ???????
 	ce := log.core.Check(ent, nil)
+
+
+
+	// 如果 ce 为 nil 则不会发生写行为
 	willWrite := ce != nil
 
+
 	// Set up any required terminal behavior.
+	//
+	// 判断 ent.Level 是否为特殊级别，主要是会导致进程退出的 PanicLevel，FatalLevel，DPanicLevel；
+	// 在这几个级别下，进程已经发生了严重错误，需要特殊处理。
 	switch ent.Level {
 	case zapcore.PanicLevel:
 		ce = ce.Should(ent, zapcore.WriteThenPanic)
@@ -319,22 +350,29 @@ func (log *Logger) check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 		}
 	}
 
-	// Only do further annotation if we're going to write this message; checked
-	// entries that exist only for terminal behavior don't benefit from
-	// annotation.
+
+	// Only do further annotation if we're going to write this message;
+	// checked entries that exist only for terminal behavior don't benefit from annotation.
+	//
+	// 判断是否需要真正写日志，如果不需要写，这里就可以返回了，返回的 ce 是 nil 或者会使进程退出的一个 entry 。
 	if !willWrite {
 		return ce
 	}
 
 	// Thread the error output through to the CheckedEntry.
 	ce.ErrorOutput = log.errorOutput
+
+	// 判断是否需要打印文件名、行号，如果需要，调用 runtime.Caller(）获取并附加进entry里。
 	if log.addCaller {
 		ce.Entry.Caller = zapcore.NewEntryCaller(runtime.Caller(log.callerSkip + callerSkipOffset))
+		// 如果调用 runtime.Caller(）失败，则输出错误信息到 log.errorOutput 中，并实时的 sync 刷盘。
 		if !ce.Entry.Caller.Defined {
 			fmt.Fprintf(log.errorOutput, "%v Logger.check error: failed to get caller\n", time.Now().UTC())
 			log.errorOutput.Sync()
 		}
 	}
+
+	// 判断是否需要打印调用栈，如果需要，调用 runtime.CallersFrames(）获取并附加到 entry 里。
 	if log.addStack.Enabled(ce.Entry.Level) {
 		ce.Entry.Stack = Stack("").String
 	}
