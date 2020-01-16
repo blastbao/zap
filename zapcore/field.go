@@ -91,9 +91,9 @@ const (
 	SkipType
 )
 
-// A Field is a marshaling operation used to add a key-value pair to a logger's
-// context. Most fields are lazily marshaled, so it's inexpensive to add fields
-// to disabled debug-level log statements.
+// A Field is a marshaling operation used to add a key-value pair to a logger's context.
+//
+// Most fields are lazily marshaled, so it's inexpensive to add fields to disabled debug-level log statements.
 type Field struct {
 	Key       string
 	Type      FieldType
@@ -102,8 +102,8 @@ type Field struct {
 	Interface interface{}
 }
 
-// AddTo exports a field through the ObjectEncoder interface. It's primarily
-// useful to library authors, and shouldn't be necessary in most applications.
+// AddTo exports a field through the ObjectEncoder interface.
+// It's primarily useful to library authors, and shouldn't be necessary in most applications.
 func (f Field) AddTo(enc ObjectEncoder) {
 
 	var err error

@@ -27,8 +27,7 @@ import (
 )
 
 // DefaultLineEnding defines the default line ending when writing logs.
-// Alternate line endings specified in EncoderConfig can override this
-// behavior.
+// Alternate line endings specified in EncoderConfig can override this behavior.
 const DefaultLineEnding = "\n"
 
 // A LevelEncoder serializes a Level to a primitive type.
@@ -266,6 +265,8 @@ type EncoderConfig struct {
 	EncodeName NameEncoder `json:"nameEncoder" yaml:"nameEncoder"`
 }
 
+
+
 // ObjectEncoder is a strongly-typed, encoding-agnostic interface for adding a
 // map- or struct-like object to the logging context.
 //
@@ -274,9 +275,11 @@ type EncoderConfig struct {
 
 type ObjectEncoder interface {
 
+
 	// Logging-specific marshalers.
 	AddArray(key string, marshaler ArrayMarshaler) error
 	AddObject(key string, marshaler ObjectMarshaler) error
+
 
 	// Built-in types.
 	AddBinary(key string, value []byte)     // for arbitrary bytes
@@ -301,11 +304,13 @@ type ObjectEncoder interface {
 	AddUint8(key string, value uint8)
 	AddUintptr(key string, value uintptr)
 
+
 	// AddReflected uses reflection to serialize arbitrary objects, so it's slow and allocation-heavy.
 	AddReflected(key string, value interface{}) error
-	// OpenNamespace opens an isolated namespace where all subsequent fields will
-	// be added. Applications can use namespaces to prevent key collisions when
-	// injecting loggers into sub-components or third-party libraries.
+
+
+	// OpenNamespace opens an isolated namespace where all subsequent fields will be added.
+	// Applications can use namespaces to prevent key collisions when injecting loggers into sub-components or third-party libraries.
 	OpenNamespace(key string)
 }
 

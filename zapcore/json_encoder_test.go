@@ -26,7 +26,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"github.com/blastbao"
+	"github.com/blastbao/zap"
 	"github.com/blastbao/zap/zapcore"
 )
 

@@ -28,23 +28,30 @@ import (
 	"github.com/blastbao/zap/zapcore"
 )
 
-// Field is an alias for Field. Aliasing this type dramatically
-// improves the navigability of this package's API documentation.
+// Field is an alias for zapcore.Field.
+// Aliasing this type dramatically improves the navigability of this package's API documentation.
 type Field = zapcore.Field
 
-// Skip constructs a no-op field, which is often useful when handling invalid
-// inputs in other Field constructors.
+// Skip constructs a no-op field, which is often useful when handling invalid inputs in other Field constructors.
 func Skip() Field {
-	return Field{Type: zapcore.SkipType}
+	return Field{
+		Type: zapcore.SkipType,
+	}
 }
+
 
 // Binary constructs a field that carries an opaque binary blob.
 //
-// Binary data is serialized in an encoding-appropriate format. For example,
-// zap's JSON encoder base64-encodes binary blobs. To log UTF-8 encoded text,
-// use ByteString.
+// Binary data is serialized in an encoding-appropriate format.
+//
+// For example, zap's JSON encoder base64-encodes binary blobs.
+// To log UTF-8 encoded text, use ByteString.
 func Binary(key string, val []byte) Field {
-	return Field{Key: key, Type: zapcore.BinaryType, Interface: val}
+	return Field{
+		Key: key,
+		Type: zapcore.BinaryType,
+		Interface: val,
+	}
 }
 
 // Bool constructs a field that carries a bool.
@@ -57,10 +64,13 @@ func Bool(key string, val bool) Field {
 }
 
 // ByteString constructs a field that carries UTF-8 encoded text as a []byte.
-// To log opaque binary blobs (which aren't necessarily valid UTF-8), use
-// Binary.
+// To log opaque binary blobs (which aren't necessarily valid UTF-8), use Binary.
 func ByteString(key string, val []byte) Field {
-	return Field{Key: key, Type: zapcore.ByteStringType, Interface: val}
+	return Field{
+		Key: key,
+		Type: zapcore.ByteStringType,
+		Interface: val,
+	}
 }
 
 // Complex128 constructs a field that carries a complex number. Unlike most
@@ -209,19 +219,29 @@ func Object(key string, val zapcore.ObjectMarshaler) Field {
 	return Field{Key: key, Type: zapcore.ObjectMarshalerType, Interface: val}
 }
 
-// Any takes a key and an arbitrary value and chooses the best way to represent
-// them as a field, falling back to a reflection-based approach only if
-// necessary.
+
+
+
+// Any takes a key and an arbitrary value and chooses the best way to represent them as a field,
+// falling back to a reflection-based approach only if necessary.
 //
-// Since byte/uint8 and rune/int32 are aliases, Any can't differentiate between
-// them. To minimize surprises, []byte values are treated as binary blobs, byte
-// values are treated as uint8, and runes are always treated as integers.
+// Since byte/uint8 and rune/int32 are aliases, Any can't differentiate between them.
+//
+// To minimize surprises, []byte values are treated as binary blobs, byte values are treated as uint8, and runes are always treated as integers.
+//
+//
 func Any(key string, value interface{}) Field {
+
+
+
 	switch val := value.(type) {
+
 	case zapcore.ObjectMarshaler:
 		return Object(key, val)
+
 	case zapcore.ArrayMarshaler:
 		return Array(key, val)
+
 	case bool:
 		return Bool(key, val)
 	case []bool:

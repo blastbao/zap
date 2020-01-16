@@ -35,14 +35,19 @@ import (
 // For JSON-escaping; see jsonEncoder.safeAddString below.
 const _hex = "0123456789abcdef"
 
-var _jsonPool = sync.Pool{New: func() interface{} {
-	return &jsonEncoder{}
-}}
+// 对象池
+var _jsonPool = sync.Pool{
+	New: func() interface{} {
+		return &jsonEncoder{}
+	},
+}
 
+// 分配
 func getJSONEncoder() *jsonEncoder {
 	return _jsonPool.Get().(*jsonEncoder)
 }
 
+// 回收
 func putJSONEncoder(enc *jsonEncoder) {
 	if enc.reflectBuf != nil {
 		enc.reflectBuf.Free()
@@ -56,10 +61,20 @@ func putJSONEncoder(enc *jsonEncoder) {
 	_jsonPool.Put(enc)
 }
 
+
+//
 type jsonEncoder struct {
+
+	// 编码配置
 	*EncoderConfig
+
+	//
 	buf            *buffer.Buffer
+
+	//
 	spaced         bool // include spaces after colons and commas
+
+	//
 	openNamespaces int
 
 	// for encoding generic values by reflection
@@ -67,16 +82,23 @@ type jsonEncoder struct {
 	reflectEnc *json.Encoder
 }
 
-// NewJSONEncoder creates a fast, low-allocation JSON encoder. The encoder
-// appropriately escapes all field keys and values.
+
+// NewJSONEncoder creates a fast, low-allocation JSON encoder.
 //
-// Note that the encoder doesn't deduplicate keys, so it's possible to produce
-// a message like
-//   {"foo":"bar","foo":"baz"}
-// This is permitted by the JSON specification, but not encouraged. Many
-// libraries will ignore duplicate key-value pairs (typically keeping the last
-// pair) when unmarshaling, but users should attempt to avoid adding duplicate
-// keys.
+// The encoder appropriately escapes all field keys and values.
+//
+// Note that the encoder doesn't deduplicate keys, so it's possible to produce a message like
+//   {
+//   	"foo":"bar",
+//   	"foo":"baz"
+//   }
+//
+// This is permitted by the JSON specification, but not encouraged.
+//
+// Many libraries will ignore duplicate key-value pairs (typically keeping the last pair) when unmarshaling,
+// but users should attempt to avoid adding duplicate keys.
+//
+//
 func NewJSONEncoder(cfg EncoderConfig) Encoder {
 	return newJSONEncoder(cfg, false)
 }
@@ -305,23 +327,37 @@ func (enc *jsonEncoder) clone() *jsonEncoder {
 	return clone
 }
 
+
+
+// 核心代码
+
 func (enc *jsonEncoder) EncodeEntry(ent Entry, fields []Field) (*buffer.Buffer, error) {
+
 	final := enc.clone()
+
+	// 添加开始符号
 	final.buf.AppendByte('{')
+
+	// 检查日志级别，添加 `"key": ent.Level`
 
 	if final.LevelKey != "" {
 		final.addKey(final.LevelKey)
 		cur := final.buf.Len()
 		final.EncodeLevel(ent.Level, final)
 		if cur == final.buf.Len() {
-			// User-supplied EncodeLevel was a no-op. Fall back to strings to keep
-			// output JSON valid.
+			// User-supplied EncodeLevel was a no-op.
+			// Fall back to strings to keep output JSON valid.
 			final.AppendString(ent.Level.String())
 		}
 	}
+
+	// 添加 timestamp
 	if final.TimeKey != "" {
 		final.AddTime(final.TimeKey, ent.Time)
 	}
+
+
+	// 添加 logger name
 	if ent.LoggerName != "" && final.NameKey != "" {
 		final.addKey(final.NameKey)
 		cur := final.buf.Len()
@@ -340,6 +376,8 @@ func (enc *jsonEncoder) EncodeEntry(ent Entry, fields []Field) (*buffer.Buffer, 
 			final.AppendString(ent.LoggerName)
 		}
 	}
+
+	// 添加 调用者信息
 	if ent.Caller.Defined && final.CallerKey != "" {
 		final.addKey(final.CallerKey)
 		cur := final.buf.Len()
@@ -350,28 +388,44 @@ func (enc *jsonEncoder) EncodeEntry(ent Entry, fields []Field) (*buffer.Buffer, 
 			final.AppendString(ent.Caller.String())
 		}
 	}
+
+	// 添加 日志内容
 	if final.MessageKey != "" {
 		final.addKey(enc.MessageKey)
 		final.AppendString(ent.Message)
 	}
+
 	if enc.buf.Len() > 0 {
 		final.addElementSeparator()
 		final.buf.Write(enc.buf.Bytes())
 	}
+
+	// 添加一组字段信息
 	addFields(final, fields)
+
 	final.closeOpenNamespaces()
+
+	// 添加堆栈信息
 	if ent.Stack != "" && final.StacktraceKey != "" {
 		final.AddString(final.StacktraceKey, ent.Stack)
 	}
+
+	// 添加结束符号
 	final.buf.AppendByte('}')
+
+	// 添加换行符
 	if final.LineEnding != "" {
 		final.buf.AppendString(final.LineEnding)
 	} else {
 		final.buf.AppendString(DefaultLineEnding)
 	}
 
+	// 返回 bytes
 	ret := final.buf
+
+	// 回收编码器
 	putJSONEncoder(final)
+
 	return ret, nil
 }
 
