@@ -439,6 +439,8 @@ func (enc *jsonEncoder) closeOpenNamespaces() {
 	}
 }
 
+
+// 添加一个 key 到 buf 中
 func (enc *jsonEncoder) addKey(key string) {
 	enc.addElementSeparator()
 	enc.buf.AppendByte('"')
@@ -450,14 +452,23 @@ func (enc *jsonEncoder) addKey(key string) {
 	}
 }
 
+// 添加元素分隔符
 func (enc *jsonEncoder) addElementSeparator() {
+
+	// 定位到 buf 的最后字符
 	last := enc.buf.Len() - 1
+
+	// 判断 buf 是否为空
 	if last < 0 {
 		return
 	}
+
+	// 检查最后字符
 	switch enc.buf.Bytes()[last] {
+	// 若最后字符是指定的分隔符，不予处理
 	case '{', '[', ':', ',', ' ':
 		return
+	// 否则添加 ","
 	default:
 		enc.buf.AppendByte(',')
 		if enc.spaced {
